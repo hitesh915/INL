@@ -1,4 +1,4 @@
-function [ output_args ] = standarizerS( input_args )
+function [ matrixZ ] = standarizerS( matrix )
 %STANDARIZERS Returns a standarized version of the data with the missing
 %values substituted with the mean of the attribute
 
