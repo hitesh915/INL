@@ -16,7 +16,7 @@ function [ std_matrix ] = standarizer( matrix )
         
         % Calculate mean and standard deviation
         mean = sum(column) / nmNum;
-        stdv = sum((column-mean).^2) / (nmNum - 1);
+        stdv = sqrt(sum((column-mean).^2) / (nmNum - 1));
         
         % Standarize column
         for j = 1:nRows
