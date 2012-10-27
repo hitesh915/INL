@@ -1,4 +1,4 @@
-matrix = parser_arff('data/breast-w.arff');
+matrix = parser_arff('data/pima_diabetes.arff');
 matrix1 = standarizerS(matrix);
 matrix2 = standarizer(matrix);
 
@@ -12,7 +12,7 @@ for k = 2:5
     best_centroids = nan;
     
     % Calculate with different seeds and select best
-    for seed = 1:25
+    for seed = 1:50
         %Compute the k clusters with k-means
         [output, centroids, inertias] = k_means(matrix1, k, seed);
         
@@ -23,6 +23,8 @@ for k = 2:5
             best_centroids = centroids;
         end
     end
+    
+    best_inertia
     
     %Use the MDS algorithm to reduce the dimensionality
     dimReduced = mds(matrix1,3);
@@ -36,4 +38,4 @@ end
 % ------------------------------------------------------
 
 %Compute the PCA transform
-%[dataAfterPCA eVectors eValues] = pca(matrix,1);
+[dataAfterPCA eVectors eValues] = pca(matrix,1);
