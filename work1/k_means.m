@@ -1,6 +1,17 @@
 function [ membership, centroids, sumWD ] = k_means( dataMatrix, k, seed )
-%KMEANS Summary of this function goes here
-%   Detailed explanation goes here
+    %KMEANS Applies the K-Means algorithm to a given data set
+    %   For a data set represented with a matrix of column features and row
+    %   individuals, a K-Means algorithm is applied to generate k clusters.
+    %
+    %   INPUTS:
+    %     - dataMatrix = A matrix with column features and row individuals
+    %     - k          = Number of clusters to calculate
+    %     - seed       = Seed for a random generator of individuals cluster
+    %
+    %   OUTPUTS:
+    %     - membership = Vector with the cluster for each individual
+    %     - centroids  = Centroids of the clusters (1 row per cluster)
+    %     - sumWD      = Vector with the inertia of each cluster
 
     function [centroids] = getCentroids(dataMatrix,membership)
         centroids = zeros(k,nCol, 'double');
