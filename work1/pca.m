@@ -10,6 +10,7 @@ function [ outData, eVectors, eValues] = pca( dataMatrix, eValueThreshold)
     %Choose components
     %order the eValues and eVectors in decend order
     eValues = flipud(diag(eValues));
+    
     eVectors = fliplr(eVectors);
     
     %construt a new feature vector based on the eValueThreshold
