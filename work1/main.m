@@ -23,15 +23,14 @@ for k = 2:5
             best_centroids = centroids;
         end
     end
-    
-    best_inertia
-    
+        
     %Use the MDS algorithm to reduce the dimensionality
     dimReduced = mds(matrix1,3);
 
     %Show a scatter plot in 3D of the clustered data with the best seed
     subplot(2,2,k-1);
     scatter3(dimReduced(:,1),dimReduced(:,2),dimReduced(:,3), 20, best_output, 'filled');
+    title(strcat('k=',int2str(k)));
 end
 
 % -- PCA
