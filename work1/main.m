@@ -1,6 +1,12 @@
-matrix = parser_arff('data/pima_diabetes.arff');
+matrix = parser_arff('data/vehicle.arff');
 matrix1 = standarizerS(matrix);
 matrix2 = standarizer(matrix);
+
+[dataAfterPCA transformedData eVectors eValues featuredVectors] = pca(matrix1,1);
+
+%Stores the most informative features acording to the PCA
+[~, mostInfFeatures] = max(featuredVectors);
+
 
 % -- K-Means for different K values
 % ------------------------------------------------------
@@ -37,4 +43,6 @@ end
 % ------------------------------------------------------
 
 %Compute the PCA transform
-[dataAfterPCA eVectors eValues] = pca(matrix,1);
+[dataAfterPCA transformedData eVectors eValues featuredVectors] = pca(matrix1,1);
+[~, mostInfFeatures] = max(featuredVectors);
+

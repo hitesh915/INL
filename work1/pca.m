@@ -1,4 +1,4 @@
-function [ outData, transformedData, eVectors, eValues] = pca( dataMatrix, eValueThreshold)
+function [ outData, transformedData, eVectors, eValues, featureVector] = pca( dataMatrix, eValueThreshold)
 %PCA - Principal Component Analysis implementation
     
     %Calculate the covariance matrix
