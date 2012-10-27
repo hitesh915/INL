@@ -17,7 +17,7 @@ for k = 2:5
         [output, centroids, inertias] = k_means(matrix1, k, seed);
         
         %Select this result if lower inertia than the previous ones
-        best_inertia = min(best_inertia, sum(inertias))
+        best_inertia = min(best_inertia, sum(inertias));
         if best_inertia == sum(inertias)
             best_output = output;
             best_centroids = centroids;
