@@ -4,14 +4,12 @@ stdata = standarizer(matrix);
 % -- K-Means for different K values
 % ------------------------------------------------------
 
+% Execute K-Means for K=2:5
+execute_algorithms(stdata, 2, 5, true, false);
+
 % -- PCA
 % ------------------------------------------------------
 
-% Run the PCA alhorithm for an eigenvalue threshold of 1
-%[dataAfterPCA transformedData eVectors eValues mostInfFeatures] = pca(stdata,1);
-
-% Show most important features for the not discarded eigenvecotrs
-%mostInfFeatures
-
-% Execute k_means for the original data once applied the PCA
-execute_k_means(stdata, 2, 5, true);
+% Get most relevant features with PCA and Apply K-Means to the
+% transformed data
+execute_algorithms(stdata, 2, 5, true, true);
