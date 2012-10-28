@@ -1,31 +1,22 @@
-function [ std_matrix ] = standarizer( matrix )
-    [nRows nCols] = size(matrix);
-    std_matrix = zeros(nRows, nCols);
-    
-    for i = 1:nCols
-        column = matrix(:,i);
-        lsNan = isnan(column);
+function [ matrixZ ] = standarizer( matrix )
+%STANDARIZERS Returns a standarized version of the data with the missing
+%values substituted with the mean of the attribute
 
-        % Remove NaNs
-        indices = find(lsNan);
-        column(find(lsNan)) = [];
-        
-        % Number of elements and NaNs
-        nmNan = sum(lsNan);
-        nmNum = numel(column);
-        
-        % Calculate mean and standard deviation
-        mean = sum(column) / nmNum;
-        stdv = sqrt(sum((column-mean).^2) / (nmNum - 1));
-        
-        % Standarize column
-        for j = 1:nRows
-            if lsNan(j)
-                std_matrix(j,i) = 0;
-            else
-                std_matrix(j,i) = (matrix(j,i) - mean) / stdv;
-            end
-        end
-    end
+    %Compute the mean of each column (NaNs no compute)
+    meanC = nanmean(matrix);
+    
+    %Logical matrix with ones in the place of NaNs and 0 the rest
+    matrixNaNs = isnan(matrix);
+    
+    %Inter. matrix, with the mean in the place of NaNs
+    matrixIntermediate = matrixNaNs * diag(meanC);
+    
+    %Join inter. matrix with original matrix. Substitude missing
+    %values(NaNs) for the mean of the attribute
+    matrix(matrixNaNs) = matrixIntermediate(matrixNaNs);
+   
+    %Get a standarized matrix
+    matrixZ = zscore(matrix);
+
 end
 
