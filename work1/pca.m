@@ -1,4 +1,4 @@
-function [ outData, transformedData, eVectors, eValues, featureVector] = pca( dataMatrix, eValueThreshold)
+function [ outData, transformedData, eVectors, eValues, informativeFeatures] = pca( dataMatrix, eValueThreshold)
 %PCA - Principal Component Analysis implementation
     
     %Calculate the covariance matrix
@@ -14,14 +14,23 @@ function [ outData, transformedData, eVectors, eValues, featureVector] = pca( da
     eVectors = fliplr(eVectors);
     
     %construt a new feature vector based on the eValueThreshold
-    featureVector = eVectors(:, eValues >= eValueThreshold);
+    featuredVectors = eVectors(:, eValues >= eValueThreshold);
     
     %Derive the new data set
-    transformedData = featureVector.' * dataMatrix.';
+    transformedData = featuredVectors.' * dataMatrix.';
     
     %Reconstruct the old data back
-    rowData = featureVector * transformedData;
+    rowData = featuredVectors * transformedData;
     outData = rowData.';
+    
+    %Informative features
+    [numFeatures, numFeaturedVectors] = size(featuredVectors);
+    featureRows = 1:numFeatures;
+    informativeFeatures = [];
+    for i = 1:numFeaturedVectors
+        [~,infFeatureI] = max(abs(featuredVectors(setdiff(featureRows,informativeFeatures),i)));
+        informativeFeatures = [informativeFeatures, (infFeatureI+sum(informativeFeatures < infFeatureI))];
+    end
     
 end
 
