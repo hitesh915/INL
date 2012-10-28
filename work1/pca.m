@@ -1,5 +1,11 @@
 function [ outData, transformedData, eVectors, eValues, informativeFeatures] = pca( dataMatrix, eValueThreshold)
 %PCA - Principal Component Analysis implementation
+
+    % Fill in unset optional values.
+    switch nargin
+        case 1
+            eValueThreshold = 1;
+    end
     
     %Calculate the covariance matrix
     covMatrix = cov(dataMatrix);
