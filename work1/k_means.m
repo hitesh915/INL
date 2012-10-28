@@ -30,24 +30,34 @@ function [ membership, centroids, sumWD ] = k_means( dataMatrix, k, seed )
     membership = randi([1,k],nRows,1);
     
     %get the initial centroids
-    centroids = getCentroids(dataMatrix, membership);
+    centroids = -3 + (3+3).*rand(k,nCol);
     
     convergence = false;
+    
      
     while ~convergence
-        distances = pdist2(dataMatrix,centroids);
+        distances = pdist2(dataMatrix,centroids,'euclidean').^2;
         [~, membership] = min(distances,[],2);
         newCentroids = getCentroids(dataMatrix,membership);
         if centroids == newCentroids
             convergence = true;
         else
             centroids = newCentroids;
+            
+            %Check if there are any centroid without members, if that
+            %centroid exists, generate a new one randomly
+            nans = isnan(centroids(:,1));
+            if max(nans)
+                for i = find(nans)'
+                    centroids(i,:) = -3 + (3+3).*rand(k,nCol);
+                end
+            end
         end
     end
     
-    sumWD = zeros(k,1,'double');
+    sumWD = zeros(k,1,'double');;
     for i = 1:k
-        wd = sum(pdist2(dataMatrix(membership == i,:), centroids(i,:)));
+        wd = sum(pdist2(dataMatrix(membership == i,:), centroids(i,:),'euclidean').^2);
         sumWD(i,:) = wd;
     end
 end
