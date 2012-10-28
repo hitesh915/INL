@@ -6,6 +6,7 @@ stdata = standarizer(matrix);
 
 % Execute K-Means for K=2:5
 execute_algorithms(stdata, 2, 5, true, false);
+pause(1);
 
 % -- PCA
 % ------------------------------------------------------
