@@ -1,0 +1,38 @@
+The principal component analysis (PCA) is a procedure used to reduce the dimensionality of the original data. The steps in what the algorithm is decomposed are:
+
+1. Subtract the mean from data.
+2. Calculate the convariance matrix.
+3. Calculate the eigenvectors and eigenvalues of covariance matrix.
+4. Choose components and construct a new featured vectors set.
+5. Transform the original data based on the set of featured vectors.
+6. Reconstruct the old data back.
+
+Now, we will detail our implementation of this steps:
+
+1. Subtract the mean from data:
+
+This step was omitted. The algorithm works with standardized data, so we've already subtracted the mean in the standardization step.
+
+2. Calculate the convariance matrix.
+This is an important step that gives us information about the variance of the several attributes. We have used the cov function to obtain this details.
+
+3. Calculate the eigenvectors and eigenvalues of covariance matrix:
+
+Matlab has a function that does that task (eig). The function returns a matrix with the eigenvectors and other with the eigenvalues on the diagonal. Both are ascendent ordered so we need to revert that in order to keep them in descendent order.
+
+The eigenvalues are put in a column with the command diag in order to be more useful.
+
+4. Choose components and construct a new featured vectors set.
+
+We have to choose the most informative attributes to represent the data. We have created a matrix containing the vectors that have eigenvalues above a determined threshold, by default 1.
+
+5. Transform the original data based on the set of featured vectors:
+
+Now, with the featured eigenvectors in our hands, we can proceed to transform our original data. To do that, we multiplay the transposed version of the featured vectors matrix by the transposed data matrix. That result will have n number of dimensions, where n is the number of eigenvectors selected.
+
+6. Reconstruct the old data back
+
+If we wanna reconstruct the data in our originals coordinates we would multiply the matrix of featured vectors by the matrix obtained in the previous step.
+
+
+Additionally to this steps, we need to know which attributes has more information. To do that, we choose from the absolute values of each featured vector the maximum value, the index of this maximum is the index the attribute that we need.   
