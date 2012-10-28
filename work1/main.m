@@ -4,9 +4,6 @@ stdata = standarizer(matrix);
 % -- K-Means for different K values
 % ------------------------------------------------------
 
-% Run the K-Means algorithm for K=2:5
-execute_k_means(stdata, 2, 5);
-
 % -- PCA
 % ------------------------------------------------------
 
