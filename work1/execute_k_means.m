@@ -22,6 +22,7 @@ function [ output_args ] = execute_k_means( matrix, minK, maxK )
                 best_centroids = centroids;
             end
         end
+        best_inertia
 
         %Use the MDS algorithm to reduce the dimensionality
         dimReduced = mds(matrix,3);
