@@ -6,8 +6,8 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r )
     tmSize = size(testMatrix);
     tmSize = tmSize(1);
     
-    % Initialize classification success matrix
-    clsSuccess = [];
+    % Initialize classification success counter
+    numSuccess = 0;
     
     % Classify the test individuals
     for i=0:tmSize
@@ -16,8 +16,60 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r )
         predictors = kNN(trainMatrix, instance, K, r);
         
         % Generate counter vector for the classes
-        numClasses = zeros(1,max(predictors(:,end)));
+        countClasses = zeros(1,max(predictors(:,end)));
         
-        % 
+        % Count instances
+        for j=1:K
+            cls = predictors(j);
+            countClasses(cls) = countCLasses(cls) + 1;
+        end
+        
+        % Get maximum count
+        mcount = max(countClasses);
+        
+        % If conflict, get class with the predictors closer to the instance
+        
+        numConflicting = sum(countClasses == mcount);
+        if numConflicting > 1
+            % Get conflicting classes indexs
+            clsConflicting = find(countClasses == mcount);
+            
+            % Get class with the shortest sum of distances
+            best_dist = NaN;
+            best_case = NaN;
+            for j=1:numConflicting
+                % Get predictors of the class
+                tpredictors = predictors(predictors(:,end) == clsConflicting(j), :);
+            
+                % Calculate total distance from predictors to instance
+                dists = pdist2(tpredictors(:,1:end-1), instance, 'minkowski',r);
+                dists = sum(dists);
+                
+                if isnan(best_dist) || dists < best_dist
+                    best_dist = dists;
+                    best_case = clsConflicting(j);
+                end
+            end
+            
+            % Select best found as the class
+            class = best_case;
+            
+        % If no conflicts, get most polled class
+        else
+            class = find(countClasses == mcount);
+        end
+        
+        % If class is the expected one
+        if class == instance(end)
+            % Increase success counter
+            numSuccess = numSuccess + 1;
+            
+            % If there was conflict, learn example
+            if numConflicting > 1
+                trainMatrix = [trainMatrix ; instance];
+            end
+        end
     end
+    
+    accuracy = numSuccess / tmSize;
 end
