@@ -9,14 +9,16 @@ function [ kPredictors ] = weightedKNN(TrainMatrix, current_instance, K, r)
     [~, numAttributes] = size(informativeFeatures);
     
     %Order the eValues depending on the index of its attribute
-    orderedEigenValues = zeros(numAttributes);
+    orderedEigenValues = zeros(1, numAttributes);
     for i = 1:numAttributes
         orderedEigenValues(informativeFeatures(i)) = eValues(i);
     end
     
     %ScaleEigenvalues
     scaleEigenValues = orderedEigenValues./sum(eValues);
-        
+    
+    scaleEigenValues
+            
     
     %Calc the minkowski distance from the current_instance to the predictors
     distances = zeros(1,size(TrainMatrix,1));
@@ -27,9 +29,10 @@ function [ kPredictors ] = weightedKNN(TrainMatrix, current_instance, K, r)
         distances(i) = sum(weightPow)^(1/r);
     end
 
-    %Calc the minimum distances
-    [~, kPindexs] = min(distances, [], 2);
-
-    %Return a list of K predictors
-    kPredictors = TrainMatrix(kPindexs >= K, :);
+    %calc the k predictors
+    [~, distIndex] = sort(distances);
+    [~, distRank] = sort(distIndex);
+    
+    kPredictors = TrainMatrix(distRank <= K,:);
+    
 end
