@@ -19,7 +19,7 @@ function [ matrix ] = parser_arff( path )
         class = srow(end);
 
         for i=1:cnum
-            if cell2mat(class) == cell2mat(cnames(i))
+            if strcmp(cell2mat(class), cell2mat(cnames(i)))
                 row = [row i];
             end
         end
@@ -65,7 +65,7 @@ function [ matrix ] = parser_arff( path )
                     cnames  = tcnames;
                     cnum = tcnum;
                 end
-            else
+            elseif ~strncmpi(line, '@', 1)
                 trow = parse_row(line);
                 matrix = [matrix ; trow];
             end
@@ -75,4 +75,3 @@ function [ matrix ] = parser_arff( path )
     % close file
     fclose(fp);
 end
-
