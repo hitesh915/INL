@@ -1,4 +1,4 @@
-function [ train_features, train_classes, test_features, test_classes ] = parser_nfold(dataset, fold)
+function [ train_matrix, test_matrix ] = parser_nfold(dataset, fold)
     % PARSER_NFOLD parses both the train and test datasets for a specific
     % fold of the given dataset.
     %
@@ -13,7 +13,7 @@ function [ train_features, train_classes, test_features, test_classes ] = parser
     %   test_classes = Classes assigned to the test individuals
     
     base = strcat('data/', dataset, '/', dataset, '.fold.00000', num2str(fold-1), '.');
-    [train_features train_classes] = parser_arff(strcat(base, 'train.arff'));
-    [test_features test_classes] = parser_arff(strcat(base, 'test.arff'));
+    train_matrix = parser_arff(strcat(base, 'train.arff'));
+    test_matrix = parser_arff(strcat(base, 'test.arff'));
 end
 

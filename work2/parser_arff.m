@@ -1,4 +1,4 @@
-function [ features, classes ] = parser_arff( path )
+function [ matrix ] = parser_arff( path )
     %PARSER_ARFF Parses a file containing a matrix
     %   This parser takes a text file and process it, removing the comments and
     %   type declarations and parsing the remaining matrix.
@@ -7,12 +7,22 @@ function [ features, classes ] = parser_arff( path )
     %   'classes' converted to their numeric indices, and all of the
     %   undefined values are converted to NaNs.
 
+    cnames = [];
+    cnum = 0;
     
     function [row, class] = parse_row( string )
         srow = strread(string, '%s', 'delimiter', ',')';
         row = strrep(srow(1:end-1), '?', 'NaN');
         row = cellfun(@str2num, row);
+        
+        % Read class
         class = srow(end);
+
+        for i=1:cnum
+            if cell2mat(class) == cell2mat(cnames(i))
+                row = [row i];
+            end
+        end
     end
 
     function [cnames, cnum] = parse_class_attribute(line)
@@ -43,10 +53,7 @@ function [ features, classes ] = parser_arff( path )
     fp = fopen(path, 'r');
     
     % initialize values
-    features = [];
-    tclasses = [];
-    cnames = [];
-    cnum = [];
+    matrix = [];
     
     % process file
     while ~feof(fp)
@@ -59,28 +66,11 @@ function [ features, classes ] = parser_arff( path )
                     cnum = tcnum;
                 end
             else
-                [tfeatures, tclass] = parse_row(line);
-                features = [features ; tfeatures];
-                tclasses = [tclasses tclass];
+                trow = parse_row(line);
+                matrix = [matrix ; trow];
             end
         end
     end
-    
-    % count number of individuals
-    nelems = size(tclasses);
-    nelems = nelems(2);
-    
-    % replace class names by class indexs
-    classes = [];
-    for i=1:nelems
-        cls = tclasses(i);
-        for j=1:cnum
-            if cell2mat(cls) == cell2mat(cnames(j))
-                classes = [classes j];
-            end
-        end
-    end
-    
     
     % close file
     fclose(fp);
