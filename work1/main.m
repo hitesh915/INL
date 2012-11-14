@@ -1,4 +1,4 @@
-matrix = parser_arff('data/vehicle.arff');
+matrix = parser_arff('data/satimage.arff');
 stdata = standarizer(matrix);
 
 % -- K-Means for different K values
