@@ -10,18 +10,18 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r )
     numSuccess = 0;
     
     % Classify the test individuals
-    for i=0:tmSize
+    for i=1:tmSize
         % Get instance and predictors
         instance = testMatrix(i,:);
-        predictors = kNN(trainMatrix, instance, K, r);
+        predictors = kNN(trainMatrix, instance(:,1:end-1), K, r);
         
         % Generate counter vector for the classes
         countClasses = zeros(1,max(predictors(:,end)));
-        
+
         % Count instances
         for j=1:K
-            cls = predictors(j);
-            countClasses(cls) = countCLasses(cls) + 1;
+            cls = predictors(j, end);
+            countClasses(cls) = countClasses(cls) + 1;
         end
         
         % Get maximum count
@@ -42,7 +42,7 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r )
                 tpredictors = predictors(predictors(:,end) == clsConflicting(j), :);
             
                 % Calculate total distance from predictors to instance
-                dists = pdist2(tpredictors(:,1:end-1), instance, 'minkowski',r);
+                dists = pdist2(tpredictors(:,1:end-1), instance(:,1:end-1), 'minkowski',r);
                 dists = sum(dists);
                 
                 if isnan(best_dist) || dists < best_dist
