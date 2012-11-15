@@ -21,7 +21,8 @@ function [ train_matrix, test_matrix ] = parser_nfold(dataset, fold)
         clist = 'Classes glossay:';
         csize = size(classes, 2);
         for i=1:csize
-            clist = strcat(clist, '\n', clist(1, i), '\t=>\t', num2str(i));
+            cname = cell2mat(classes(1, i));
+            clist = strcat(clist, '\n', cname, '\t=>\t', num2str(i));
         end
 
         fprintf(strcat(clist, '\n\n'));
