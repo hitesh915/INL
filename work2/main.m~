@@ -1,6 +1,0 @@
-%[features, classes] = parser_arff('data/bal/bal.fold.000000.test.arff');
-
-dataset = 'breast-w'
-[train, test] = parser_nfold('breast-w', 1);
-stdTrain = [standarizer(train(:,1:end-1)), train(:,end)];
-stdTest = [standarizer(test(:,1:end-1)), test(:,end)];

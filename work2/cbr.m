@@ -1,6 +1,14 @@
-function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r )
+function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
     %CBR Summary of this function goes here
-    %   Detailed explanation goes here
+    %  INPUTS:
+    %    trainMatrix: Matrix with the training data used by the classifier
+    %    testMatrix: Matrix with the test data to classify
+    %    K = K value to use as number of neighbors in the kNN algorithm
+    %    r = Operator to use to calculate the distance between individuals
+    %    knn_type = Type of kNN algorithm to apply:
+    %      - 1 = kNN
+    %      - 2 = weighted kNN
+    %      - 4 = selected kNN
 
 %     function [ entropy ] = get_entropy( countsVector )
 %         vector = countsVector(countsVector ~= 0);
@@ -31,9 +39,18 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r )
     
     % Classify the test individuals
     for i=1:tmSize
-        % Get instance and predictors
+        % Get instance to classify
         instance = testMatrix(i,:);
-        predictors = kNN(trainMatrix, instance(:,1:end-1), K, r);
+        
+        % Get the predictors
+        if knn_type == 1
+            predictors = kNN(trainMatrix, instance(:,1:end-1), K, r);
+        elseif knn_type == 2
+            predictors = weightedKNN(trainMatrix, instance(:,1:end-1), K, r);
+        elseif knn_type == 3
+            predictors = selectedKNN(trainMatrix, instance(:,1:end-1), K, r);
+        end
+        
         
         % Generate counter vector for the classes
         countClasses = zeros(1,max(predictors(:,end)));
