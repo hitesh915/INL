@@ -2,6 +2,26 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r )
     %CBR Summary of this function goes here
     %   Detailed explanation goes here
 
+%     function [ entropy ] = get_entropy( countsVector )
+%         vector = countsVector(countsVector ~= 0);
+%         
+%         nElements = sum(vector);
+%         nClasses = size(vector);
+%         nClasses = nClasses(2);
+%         
+%         if nClasses == 1
+%             entropy = 0;
+%             return;
+%         end
+%         
+%         entropy = 0;
+%         for i=1:nClasses
+%             p = vector(i)/nElements;
+%             entropy = entropy - p * log2(p);
+%         end
+%         entropy = entropy / log2(nClasses);
+%     end
+        
     % Get number of instances on the test matrix
     tmSize = size(testMatrix);
     tmSize = tmSize(1);
