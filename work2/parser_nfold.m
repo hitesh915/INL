@@ -13,7 +13,18 @@ function [ train_matrix, test_matrix ] = parser_nfold(dataset, fold)
     %   test_classes = Classes assigned to the test individuals
     
     base = strcat('data/', dataset, '/', dataset, '.fold.00000', num2str(fold-1), '.');
-    train_matrix = parser_arff(strcat(base, 'train.arff'));
-    test_matrix = parser_arff(strcat(base, 'test.arff'));
+    [train_matrix, classes] = parser_arff(strcat(base, 'train.arff'));
+    [test_matrix, classes] = parser_arff(strcat(base, 'test.arff'));
+    
+    % Show classes glossary
+    if fold == 1
+        clist = 'Classes glossay:';
+        csize = size(classes, 2);
+        for i=1:csize
+            clist = strcat(clist, '\n', clist(1, i), '\t=>\t', num2str(i));
+        end
+
+        fprintf(strcat(clist, '\n\n'));
+    end
 end
 

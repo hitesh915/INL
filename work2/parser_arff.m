@@ -1,4 +1,4 @@
-function [ matrix ] = parser_arff( path )
+function [ matrix, classes ] = parser_arff( path )
     %PARSER_ARFF Parses a file containing a matrix
     %   This parser takes a text file and process it, removing the comments and
     %   type declarations and parsing the remaining matrix.
@@ -71,6 +71,9 @@ function [ matrix ] = parser_arff( path )
             end
         end
     end
+    
+    % Set list of classes return value
+    classes = cnames;
     
     % close file
     fclose(fp);
