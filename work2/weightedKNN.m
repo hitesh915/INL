@@ -6,32 +6,21 @@ function [ kPredictors ] = weightedKNN(TrainMatrix, current_instance, K, r)
     [stdAttributes, mean, stdDev] = standarizer(TrainMatrix(:,1:end-1));
     stdTrain = [stdAttributes, TrainMatrix(:,end)];
     stdCurrent = (current_instance-mean)./stdDev;
-
-    %Get the eigenValues and the rank of the attributes according to its
-    %importance
-    [ ~, ~, eVectors, eValues, informativeFeatures] = pca(stdTrain(:,1:end-1), 0);
+    stdCurrent(isnan(stdCurrent)) = 0;
     
-    [~, numAttributes] = size(informativeFeatures);
+    %Get the weights using FS filter relieff
+    [~, weights] = relieff(stdTrain(:,1:end-1),stdTrain(:,end),K, 'method', 'classification', 'categoricalx', 'off');
     
-    %Order the eValues depending on the index of its attribute
-    orderedEigenValues = zeros(1, numAttributes);
-    for i = 1:numAttributes
-        orderedEigenValues(informativeFeatures(i)) = eValues(i);
-    end
+    %ranging the weights
+    weights = weights - min(weights);
+    weights = weights./range(weights);
     
-    %ScaleEigenvalues
-    %scaleEigenValues = orderedEigenValues./sum(eValues);
-    scaleEigenValues = eVectors(:,1)./sum(eVectors(:,1));
-    %sumEigenValue = sum(abs(eVectors),2);
-    %scaleEigenValues = sumEigenValue./sum(sumEigenValue);
-    
-    %Calc the minkowski distance from the current_instance to the predictors
     distances = zeros(1,size(stdTrain,1));
     for i = 1:size(stdTrain,1)
         dif = stdTrain(i,1:end-1) - stdCurrent;
         pow = dif.^r;
         pow = abs(pow);
-        weightPow = pow.*abs(scaleEigenValues');
+        weightPow = pow.*abs(weights);
         distances(i) = sum(weightPow)^(1/r);
     end
 

@@ -1,4 +1,4 @@
-dataset = 'iris';
+dataset = 'waveform';
 
 K = [1,3,5,7,9,11,13];
 R = 1:3;
@@ -13,7 +13,7 @@ for r = R
         accuracies = zeros(1, 10);
         for fold = 1:10
             [train, test] = parser_nfold(dataset, fold);
-            accuracies(fold) = cbr( train, test, k, r , 2);
+            accuracies(fold) = cbr( train, test, k, r , 1);
         end
         accuracyMean = mean(accuracies);
         accuracySTD = std(accuracies);
