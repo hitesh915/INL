@@ -9,7 +9,7 @@ function [ kPredictors ] = weightedKNN(TrainMatrix, current_instance, K, r)
 
     %Get the eigenValues and the rank of the attributes according to its
     %importance
-    [ ~, ~, ~, eValues, informativeFeatures] = pca(stdTrain(:,1:end-1), 0);
+    [ ~, ~, eVectors, eValues, informativeFeatures] = pca(stdTrain(:,1:end-1), 0);
     
     [~, numAttributes] = size(informativeFeatures);
     
@@ -20,14 +20,18 @@ function [ kPredictors ] = weightedKNN(TrainMatrix, current_instance, K, r)
     end
     
     %ScaleEigenvalues
-    scaleEigenValues = orderedEigenValues./sum(eValues);            
+    %scaleEigenValues = orderedEigenValues./sum(eValues);
+    scaleEigenValues = eVectors(:,1)./sum(eVectors(:,1));
+    %sumEigenValue = sum(abs(eVectors),2);
+    %scaleEigenValues = sumEigenValue./sum(sumEigenValue);
     
     %Calc the minkowski distance from the current_instance to the predictors
     distances = zeros(1,size(stdTrain,1));
     for i = 1:size(stdTrain,1)
         dif = stdTrain(i,1:end-1) - stdCurrent;
         pow = dif.^r;
-        weightPow = pow.*scaleEigenValues;
+        pow = abs(pow);
+        weightPow = pow.*abs(scaleEigenValues');
         distances(i) = sum(weightPow)^(1/r);
     end
 

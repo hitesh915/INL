@@ -1,10 +1,11 @@
-dataset = 'bal';
+dataset = 'iris';
 
-K = 1:10;
+K = [1,3,5,7,9,11,13];
 R = 1:3;
 
 meansAccuracyList = [];
 stdAccuracyList = [];
+SEMList = [];
 
 
 for r = R
@@ -12,21 +13,19 @@ for r = R
         accuracies = zeros(1, 10);
         for fold = 1:10
             [train, test] = parser_nfold(dataset, fold);
-            accuracies(fold) = cbr( train, test, k, r , 1);
+            accuracies(fold) = cbr( train, test, k, r , 2);
         end
+        accuracyMean = mean(accuracies);
+        accuracySTD = std(accuracies);
+        accuracySEM = accuracySTD/sqrt(size(K,2));
         fprintf(strcat('K:\t',num2str(k),'\nR:\t', num2str(r),'\n'));
-        fprintf(strcat('Mean accuracy:\t\t', num2str(mean(accuracies)), '\n'));
-        fprintf(strcat('Accuracy standard dev.:\t', num2str(std(accuracies)), '\n'));
-        meansAccuracyList = [meansAccuracyList, mean(accuracies)];
-        stdAccuracyList = [stdAccuracyList, std(accuracies)];
+        fprintf(strcat('Mean accuracy:\t\t', num2str(accuracyMean), '\n'));
+        fprintf(strcat('Accuracy standard dev.:\t', num2str(accuracySTD), '\n'));
+        fprintf(strcat('Standard Error of Mean:\t', num2str(accuracySEM), '\n'));
+        meansAccuracyList = [meansAccuracyList, accuracyMean];
+        stdAccuracyList = [stdAccuracyList, accuracySTD];
+        SEMList = [SEMList, accuracySEM];
     end
 end
 
-figure;
-plot(K, meansAccuracyList(1,1:10),'-', K, meansAccuracyList(1,11:20),'r-', K, meansAccuracyList(1,21:30),'g-');
-legend('r=1', 'r=2', 'r=3');
-
-grid on;
-
-xlabel('K value');
-ylabel('Accuracy');
+ploting(K, meansAccuracyList, SEMList);

@@ -44,6 +44,9 @@ function [ outData, transformedData, eVectors, eValues, informativeFeatures] = p
         [~,indXMax] = max(infFeatureRank);
         informativeFeatures = [informativeFeatures, indXMax];
     end
+%     [~, infFeatureI] = sort(abs(featuredVectors(:,1)));
+%     [~, infFeatureRank] = sort(infFeatureI);
+%     informativeFeatures = infFeatureRank;
     
 end
 
