@@ -10,25 +10,25 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
     %      - 2 = weighted kNN
     %      - 4 = selected kNN
 
-%     function [ entropy ] = get_entropy( countsVector )
-%         vector = countsVector(countsVector ~= 0);
-%         
-%         nElements = sum(vector);
-%         nClasses = size(vector);
-%         nClasses = nClasses(2);
-%         
-%         if nClasses == 1
-%             entropy = 0;
-%             return;
-%         end
-%         
-%         entropy = 0;
-%         for i=1:nClasses
-%             p = vector(i)/nElements;
-%             entropy = entropy - p * log2(p);
-%         end
-%         entropy = entropy / log2(nClasses);
-%     end
+    function [ entropy ] = get_entropy( countsVector )
+        vector = countsVector(countsVector ~= 0);
+        
+        nElements = sum(vector);
+        nClasses = size(vector);
+        nClasses = nClasses(2);
+        
+        if nClasses == 1
+            entropy = 0;
+            return;
+        end
+        
+        entropy = 0;
+        for c=1:nClasses
+            p = vector(c)/nElements;
+            entropy = entropy - p * log2(p);
+        end
+        entropy = entropy / log2(nClasses);
+    end
         
     % Get number of instances on the test matrix
     tmSize = size(testMatrix);
@@ -49,8 +49,7 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
             predictors = weightedKNN(trainMatrix, instance(:,1:end-1), K, r);
         elseif knn_type == 3
             predictors = selectedKNN(trainMatrix, instance(:,1:end-1), K, r);
-        end
-        
+        end    
         
         % Generate counter vector for the classes
         countClasses = zeros(1,max(predictors(:,end)));
@@ -102,7 +101,7 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
             numSuccess = numSuccess + 1;
             
             % If there was conflict, learn example
-            if numConflicting > 1
+            if get_entropy(countClasses) >= 0.6
                 trainMatrix = [trainMatrix ; instance];
             end
         end
