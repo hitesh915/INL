@@ -7,12 +7,19 @@ meansAccuracyList = [];
 stdAccuracyList = [];
 SEMList = [];
 
+%Get the data from files
+data = [];
+for fold = 1:10
+   [train, test] = parser_nfold(dataset, fold);
+   data = [data;{train,test}];
+end
 
 for r = R
     for k = K
         accuracies = zeros(1, 10);
         for fold = 1:10
-            [train, test] = parser_nfold(dataset, fold);
+            train = data{fold,1};
+            test = data{fold,2};
             accuracies(fold) = cbr( train, test, k, r , 1);
         end
         accuracyMean = mean(accuracies);

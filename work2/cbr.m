@@ -37,18 +37,36 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
     % Initialize classification success counter
     numSuccess = 0;
     
+    %standarize data
+    [stdAttributes, mean, stdDev] = standarizer(trainMatrix(:,1:end-1));
+    stdTrain = [stdAttributes, trainMatrix(:,end)];
+    
+    if knn_type == 2
+        %Get the weights using FS filter relieff
+        [~, weights] = relieff(stdTrain(:,1:end-1),stdTrain(:,end),K, 'method', 'classification', 'categoricalx', 'off');
+
+        %ranging the weights
+        minWeights = min(weights);
+        maxWeights = max(weights);
+        weights = (((weights - minWeights).*0.9)./(maxWeights-minWeights))+0.1;
+    end
+    
+    
     % Classify the test individuals
     for i=1:tmSize
         % Get instance to classify
         instance = testMatrix(i,:);
+        stdInstance = (instance(:,1:end-1)-mean)./stdDev;
+        stdInstance(isnan(stdInstance)) = 0;
+        stdInstance = [stdInstance, instance(:,end)];
         
         % Get the predictors
         if knn_type == 1
-            predictors = kNN(trainMatrix, instance(:,1:end-1), K, r);
+            predictors = kNN(stdTrain, stdInstance(:,1:end-1), K, r);
         elseif knn_type == 2
-            predictors = weightedKNN(trainMatrix, instance(:,1:end-1), K, r);
+            predictors = weightedKNN(stdTrain, stdInstance(:,1:end-1), K, r, weights);
         elseif knn_type == 3
-            predictors = selectedKNN(trainMatrix, instance(:,1:end-1), K, r);
+            predictors = selectedKNN(stdTrain, stdInstance(:,1:end-1), K, r);
         end    
         
         % Generate counter vector for the classes
@@ -78,7 +96,7 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
                 tpredictors = predictors(predictors(:,end) == clsConflicting(j), :);
             
                 % Calculate total distance from predictors to instance
-                dists = pdist2(tpredictors(:,1:end-1), instance(:,1:end-1), 'minkowski',r);
+                dists = pdist2(tpredictors(:,1:end-1), stdInstance(:,1:end-1), 'minkowski',r);
                 dists = sum(dists);
                 
                 if isnan(best_dist) || dists < best_dist
@@ -101,8 +119,22 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
             numSuccess = numSuccess + 1;
             
             % If there was conflict, learn example
-            if get_entropy(countClasses) >= 0.6
+            if get_entropy(countClasses) >= 0.9
                 trainMatrix = [trainMatrix ; instance];
+                
+                %RE-standarize data
+                [stdAttributes, mean, stdDev] = standarizer(trainMatrix(:,1:end-1));
+                stdTrain = [stdAttributes, trainMatrix(:,end)];
+                
+                if knn_type == 2
+                    %Get the weights using FS filter relieff
+                    [~, weights] = relieff(stdTrain(:,1:end-1),stdTrain(:,end),K, 'method', 'classification', 'categoricalx', 'off');
+
+                    %ranging the weights
+                    minWeights = min(weights);
+                    maxWeights = max(weights);
+                    weights = (((weights - minWeights).*0.9)./(maxWeights-minWeights))+0.1;
+                end
             end
         end
     end
