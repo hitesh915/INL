@@ -1,6 +1,10 @@
-dataset = 'pen-based';
+%The dataset used on the experiment
+dataset = 'iris';
 
+%Several values of K
 K = [1,3,5,7,9,11,13];
+
+%Several values of R
 R = 1:3;
 
 meansAccuracyList = [];
@@ -21,25 +25,34 @@ end
 for r = R
     for k = K
         accuracies = zeros(1, 10);
+        
+        %Execute the cbr for each fold
         for fold = 1:10
             train = data{fold,1};
             test = data{fold,2};
             accuracies(fold) = cbr( train, test, k, r , 1);
         end
+        
+        %Compute the statistics
         accuracyMean = mean(accuracies);
         accuracySTD = std(accuracies);
         accuracySEM = accuracySTD/sqrt(size(K,2));
+        
+        %Print informaption about the results of the execution
         fprintf(strcat('K:\t',num2str(k),'\nR:\t', num2str(r),'\n'));
         fprintf(strcat('Mean accuracy:\t\t', num2str(accuracyMean), '\n'));
         fprintf(strcat('Accuracy standard dev.:\t', num2str(accuracySTD), '\n'));
         fprintf(strcat('Standard Error of Mean:\t', num2str(accuracySEM), '\n'));
+        
+        %Add the info to the statistics list
         meansAccuracyList = [meansAccuracyList, accuracyMean];
         stdAccuracyList = [stdAccuracyList, accuracySTD];
         SEMList = [SEMList, accuracySEM];
     end
 end
-ploting(K, meansAccuracyList, SEMList);
 
+%Plot the results
+ploting(dataset, K, meansAccuracyList, SEMList);
 
 % STEP 2: APPLY WEIGHTED AND SELECTED KNN ALGORITHMS
 % --------------------------------------------------------------
