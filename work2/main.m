@@ -77,7 +77,7 @@ sAccuracySTD = std(sAccuracies);
 sAcuracySEM = sAccuracySTD/sqrt(size(K,2));
 
 % Show results for segmented kNN
-fprintf('Weighted kNN:');
+fprintf('Selected kNN:');
 fprintf(strcat('Mean accuracy:\t\t', num2str(sAccuracyMean), '\n'));
 fprintf(strcat('Accuracy standard dev.:\t', num2str(sAccuracySTD), '\n'));
 fprintf(strcat('Standard Error of Mean:\t', num2str(sAccuracySEM), '\n'));
