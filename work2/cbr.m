@@ -62,11 +62,11 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
         
         % Get the predictors
         if knn_type == 1
-            predictors = kNN(stdTrain, stdInstance(:,1:end-1), K, r);
+            [predictors, distances] = kNN(stdTrain, stdInstance(:,1:end-1), K, r);
         elseif knn_type == 2
-            predictors = weightedKNN(stdTrain, stdInstance(:,1:end-1), K, r, weights);
+            [predictors, distances] = weightedKNN(stdTrain, stdInstance(:,1:end-1), K, r, weights);
         elseif knn_type == 3
-            predictors = selectedKNN(stdTrain, stdInstance(:,1:end-1), K, r);
+            [predictors, distances] = selectedKNN(stdTrain, stdInstance(:,1:end-1), K, r);
         end    
         
         % Generate counter vector for the classes
@@ -88,16 +88,15 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
             % Get conflicting classes indexs
             clsConflicting = find(countClasses == mcount);
             
+            
             % Get class with the shortest sum of distances
             best_dist = NaN;
             best_case = NaN;
             for j=1:numConflicting
-                % Get predictors of the class
-                tpredictors = predictors(predictors(:,end) == clsConflicting(j), :);
-            
                 % Calculate total distance from predictors to instance
-                dists = pdist2(tpredictors(:,1:end-1), stdInstance(:,1:end-1), 'minkowski',r);
-                dists = sum(dists);
+                tfilter = predictors(:,end) == clsConflicting(j);
+                tdistances  = distances(tfilter);
+                dists = sum(tdistances);
                 
                 if isnan(best_dist) || dists < best_dist
                     best_dist = dists;

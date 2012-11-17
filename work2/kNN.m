@@ -1,4 +1,4 @@
-function [ kPredictors ] = kNN(TrainMatrix, current_instance, K, r)
+function [ kPredictors, kDistances ] = kNN(TrainMatrix, current_instance, K, r)
 %kNN Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -8,6 +8,7 @@ function [ kPredictors ] = kNN(TrainMatrix, current_instance, K, r)
     [~, distIndex] = sort(distances);
     [~, distRank] = sort(distIndex);
     
+    iPredictors = distRank <= K;
     kPredictors = TrainMatrix(distRank <= K,:);
-
+    kDistances = distances(iPredictors);
 end

@@ -1,4 +1,4 @@
-function [ kPredictors ] = weightedKNN(TrainMatrix, current_instance, K, r, weights)
+function [ kPredictors, kWeightedDistances ] = weightedKNN(TrainMatrix, current_instance, K, r, weights)
 %kNN Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -15,6 +15,7 @@ function [ kPredictors ] = weightedKNN(TrainMatrix, current_instance, K, r, weig
     [~, distIndex] = sort(distances);
     [~, distRank] = sort(distIndex);
     
-    kPredictors = TrainMatrix(distRank <= K,:);
-    
+    iPredictors = distRank <= K;
+    kPredictors = TrainMatrix(iPredictors,:);
+    kWeightedDistances = distances(iPredictors);
 end
