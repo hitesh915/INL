@@ -82,12 +82,10 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
         mcount = max(countClasses);
         
         % If conflict, get class with the predictors closer to the instance
-        
         numConflicting = sum(countClasses == mcount);
         if numConflicting > 1
             % Get conflicting classes indexs
             clsConflicting = find(countClasses == mcount);
-            
             
             % Get class with the shortest sum of distances
             best_dist = NaN;
