@@ -1,11 +1,17 @@
 function [ matrix, classes ] = parser_arff( path )
     %PARSER_ARFF Parses a file containing a matrix
-    %   This parser takes a text file and process it, removing the comments and
-    %   type declarations and parsing the remaining matrix.
-    %   The format of the matrix is expected to be a row per line, separated by
-    %   commas. The last column (classes) is returned in the independent vector
-    %   'classes' converted to their numeric indices, and all of the
-    %   undefined values are converted to NaNs.
+    %  This parser takes a text file and process it, removing the comments
+    %  and type declarations and parsing the remaining matrix.
+    %  The format of the matrix is expected to be a row per line, separated by
+    %  commas. The last column (classes) is converted to numerical values,
+    %  and an ordered list of the original class names is returned
+    %
+    %  INPUTS:
+    %    path = Path of the file to parse
+    %
+    %  OUTPUTS:
+    %    matrix = Matrix with the parsed data (classes passed to numerical)
+    %    classes = Ordered list of the original classes name
 
     cnames = [];
     cnum = 0;
