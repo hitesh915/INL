@@ -1,5 +1,5 @@
 %The dataset used on the experiment
-dataset = 'iris';
+dataset = 'breast-w';
 
 %Several values of K
 K = [1,3,5,7,9,11,13];
@@ -58,8 +58,9 @@ ploting(dataset, K, meansAccuracyList, SEMList);
 % --------------------------------------------------------------
 
 % Set K and R values to use
-k = 1;
-r = 1;
+[~, idxMax] = max(meansAccuracyList);
+k = K(mod(idxMax,7));
+r = ceil(idxMax/7);
 
 % Initialize accuracy vectors
 wAccuracies = zeros(1, 10);
@@ -80,7 +81,7 @@ kAccuracySTD = std(kAccuracies);
 kAccuracySEM = kAccuracySTD/sqrt(size(K,2));
 
 % Show results for kNN
-fprintf('COMPARATIVE\n---------------\n\nkNN:\n');
+fprintf(strcat('COMPARATIVE (K = ',num2str(k),' R= ', num2str(r),')\n----------------------\n\nkNN:\n'));
 fprintf(strcat('Mean accuracy:\t\t', num2str(kAccuracyMean), '\n'));
 fprintf(strcat('Accuracy standard dev.:\t', num2str(kAccuracySTD), '\n'));
 fprintf(strcat('Standard Error of Mean:\t', num2str(kAccuracySEM), '\n'));
