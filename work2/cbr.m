@@ -8,7 +8,7 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
     %    knn_type = Type of kNN algorithm to apply:
     %      - 1 = kNN
     %      - 2 = weighted kNN
-    %      - 4 = selected kNN
+    %      - 3 = selected kNN
 
     function [ entropy ] = get_entropy( countsVector )
         vector = countsVector(countsVector ~= 0);
@@ -41,7 +41,7 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
     [stdAttributes, mean, stdDev] = standarizer(trainMatrix(:,1:end-1));
     stdTrain = [stdAttributes, trainMatrix(:,end)];
     
-    if knn_type == 2
+    if knn_type > 1
         %Get the weights using FS filter relieff
         [~, weights] = relieff(stdTrain(:,1:end-1),stdTrain(:,end),K, 'method', 'classification', 'categoricalx', 'off');
 
@@ -49,8 +49,16 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
         minWeights = min(weights);
         maxWeights = max(weights);
         weights = (((weights - minWeights).*0.9)./(maxWeights-minWeights))+0.1;
+
+        % If selected kNN, remove unused attributes
+        if knn_type == 3
+            selector = weights >= 0.1;
+            stdTrain = [ stdTrain(:, selector), stdTrain(:, end) ];
+            testMatrix = [ testMatrix(:, selector), testMatrix(:, end) ];
+            mean = mean(:, selector);
+            stdDev = stdDev(:, selector);
+        end
     end
-    
     
     % Classify the test individuals
     for i=1:tmSize
@@ -66,7 +74,7 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
         elseif knn_type == 2
             [predictors, distances] = weightedKNN(stdTrain, stdInstance(:,1:end-1), K, r, weights);
         elseif knn_type == 3
-            [predictors, distances] = selectedKNN(stdTrain, stdInstance(:,1:end-1), K, r);
+            [predictors, distances] = kNN(stdTrain, stdInstance(:,1:end-1), K, r);
         end    
         
         % Generate counter vector for the classes

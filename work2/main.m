@@ -53,7 +53,7 @@ end
 
 %Plot the results
 ploting(dataset, K, meansAccuracyList, SEMList);
-
+ 
 % STEP 2: APPLY WEIGHTED AND SELECTED KNN ALGORITHMS
 % --------------------------------------------------------------
 
@@ -69,14 +69,26 @@ sAccuracies = zeros(1, 10);
 for fold = 1:10
     train = data{fold,1};
     test = data{fold,2};
+    kAccuracies(fold) = cbr(train, test, k, r, 1);
     wAccuracies(fold) = cbr(train, test, k, r, 2);
     sAccuracies(fold) = cbr(train, test, k, r, 3);
 end
 
+% Calculate mean accuracy for the kNN algorithm
+kAccuracyMean = mean(kAccuracies);
+kAccuracySTD = std(kAccuracies);
+kAccuracySEM = kAccuracySTD/sqrt(size(K,2));
+
+% Show results for kNN
+fprintf('kNN:');
+fprintf(strcat('Mean accuracy:\t\t', num2str(kAccuracyMean), '\n'));
+fprintf(strcat('Accuracy standard dev.:\t', num2str(kAccuracySTD), '\n'));
+fprintf(strcat('Standard Error of Mean:\t', num2str(kAccuracySEM), '\n'));
+
 % Calculate mean accuracy for the weighted kNN algorithm
 wAccuracyMean = mean(wAccuracies);
 wAccuracySTD = std(wAccuracies);
-wAcuracySEM = wAccuracySTD/sqrt(size(K,2));
+wAccuracySEM = wAccuracySTD/sqrt(size(K,2));
 
 % Show results for weighted kNN
 fprintf('Weighted kNN:');
@@ -87,7 +99,7 @@ fprintf(strcat('Standard Error of Mean:\t', num2str(wAccuracySEM), '\n'));
 % Calculate mean accuracy for the selected kNN algorithm
 sAccuracyMean = mean(sAccuracies);
 sAccuracySTD = std(sAccuracies);
-sAcuracySEM = sAccuracySTD/sqrt(size(K,2));
+sAccuracySEM = sAccuracySTD/sqrt(size(K,2));
 
 % Show results for segmented kNN
 fprintf('Selected kNN:');
