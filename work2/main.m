@@ -1,5 +1,5 @@
 %The dataset used on the experiment
-dataset = 'breast-w';
+dataset = 'iris';
 
 %Several values of K
 K = [1,3,5,7,9,11,13];
@@ -107,3 +107,35 @@ fprintf('\nSelected kNN:\n');
 fprintf(strcat('Mean accuracy:\t\t', num2str(sAccuracyMean), '\n'));
 fprintf(strcat('Accuracy standard dev.:\t', num2str(sAccuracySTD), '\n'));
 fprintf(strcat('Standard Error of Mean:\t', num2str(sAccuracySEM), '\n'));
+
+%Perform a paired t-test comparing simpleKnn with weightedKnn, with a
+%significance of 0.05.
+fprintf('\nPaired T test (alpha=0.05): CBR(kNN) vs CBR(weightedkNN)\n---------------------------------------------------------\nH0:\tkNN == weightedKNN\nH1:\tkNN != weightedKNN\n');
+
+[simpleVsWeightedH,simpleVsWeightedPValue, simpleVsWeightedCI]  = ttest(kAccuracies, wAccuracies, 0.05, 'both', 2);
+
+if simpleVsWeightedH == 1
+    if simpleVsWeightedCI(2) < 0
+        fprintf('H0 rejection! weightedKNN significantly better than kNN\n');
+    else
+        fprintf('H0 rejection! kNN significantly better than weightedKNN\n');
+    end
+else
+    fprintf('Result: The null hyphotesis (H0) cannot be rejected.\n');
+end
+
+%Perform a paired t-test comparing simpleKnn with weightedKnn, with a
+%significance of 0.05.
+fprintf('\nPaired T test (alpha=0.05): CBR(kNN) vs CBR(selectedKNN)\n---------------------------------------------------------\nH0:\tkNN == selectedKNN\nH1:\tkNN != selectedKNN\n');
+
+[simpleVsSelectedH,simpleVsSelectedPValue, simpleVsSelectedCI]  = ttest(kAccuracies, sAccuracies, 0.05, 'both', 2);
+
+if simpleVsSelectedH == 1
+    if simpleVsSelectedCI(2) < 0
+        fprintf('H0 rejection! selectedKNN significantly better than kNN\n');
+    else
+        fprintf('H0 rejection! kNN significantly better than selectedKNN\n');
+    end
+else
+    fprintf('Result: The null hyphotesis (H0) cannot be rejected.\n');
+end
