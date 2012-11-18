@@ -42,7 +42,7 @@ for r = R
         fprintf(strcat('K:\t',num2str(k),'\nR:\t', num2str(r),'\n'));
         fprintf(strcat('Mean accuracy:\t\t', num2str(accuracyMean), '\n'));
         fprintf(strcat('Accuracy standard dev.:\t', num2str(accuracySTD), '\n'));
-        fprintf(strcat('Standard Error of Mean:\t', num2str(accuracySEM), '\n'));
+        fprintf(strcat('Standard Error of Mean:\t', num2str(accuracySEM), '\n\n'));
         
         %Add the info to the statistics list
         meansAccuracyList = [meansAccuracyList, accuracyMean];
@@ -80,7 +80,7 @@ kAccuracySTD = std(kAccuracies);
 kAccuracySEM = kAccuracySTD/sqrt(size(K,2));
 
 % Show results for kNN
-fprintf('kNN:');
+fprintf('COMPARATIVE\n---------------\n\nkNN:\n');
 fprintf(strcat('Mean accuracy:\t\t', num2str(kAccuracyMean), '\n'));
 fprintf(strcat('Accuracy standard dev.:\t', num2str(kAccuracySTD), '\n'));
 fprintf(strcat('Standard Error of Mean:\t', num2str(kAccuracySEM), '\n'));
@@ -91,7 +91,7 @@ wAccuracySTD = std(wAccuracies);
 wAccuracySEM = wAccuracySTD/sqrt(size(K,2));
 
 % Show results for weighted kNN
-fprintf('Weighted kNN:');
+fprintf('\nWeighted kNN:\n');
 fprintf(strcat('Mean accuracy:\t\t', num2str(wAccuracyMean), '\n'));
 fprintf(strcat('Accuracy standard dev.:\t', num2str(wAccuracySTD), '\n'));
 fprintf(strcat('Standard Error of Mean:\t', num2str(wAccuracySEM), '\n'));
@@ -102,7 +102,7 @@ sAccuracySTD = std(sAccuracies);
 sAccuracySEM = sAccuracySTD/sqrt(size(K,2));
 
 % Show results for segmented kNN
-fprintf('Selected kNN:');
+fprintf('\nSelected kNN:\n');
 fprintf(strcat('Mean accuracy:\t\t', num2str(sAccuracyMean), '\n'));
 fprintf(strcat('Accuracy standard dev.:\t', num2str(sAccuracySTD), '\n'));
 fprintf(strcat('Standard Error of Mean:\t', num2str(sAccuracySEM), '\n'));

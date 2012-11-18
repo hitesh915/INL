@@ -45,16 +45,14 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
         %Get the weights using FS filter relieff
         [~, weights] = relieff(stdTrain(:,1:end-1),stdTrain(:,end),K, 'method', 'classification', 'categoricalx', 'off');
 
-        %ranging the weights
-        minWeights = min(weights);
-        maxWeights = max(weights);
-        weights = (((weights - minWeights).*0.9)./(maxWeights-minWeights))+0.1;
+        %ranging the weights into the interval [0,1]
+        weights = (weights - (-1))./2;
 
         % If selected kNN, remove unused attributes
         if knn_type == 3
-            selector = weights >= 0.1;
+            threshold = sum(weights)/size(weights,2);
+            selector = weights >= threshold;
             stdTrain = [ stdTrain(:, selector), stdTrain(:, end) ];
-            testMatrix = [ testMatrix(:, selector), testMatrix(:, end) ];
             mean = mean(:, selector);
             stdDev = stdDev(:, selector);
         end
@@ -64,7 +62,11 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
     for i=1:tmSize
         % Get instance to classify
         instance = testMatrix(i,:);
-        stdInstance = (instance(:,1:end-1)-mean)./stdDev;
+        if knn_type == 3
+            stdInstance = (instance(:,selector)-mean)./stdDev; 
+        else
+            stdInstance = (instance(:,1:end-1)-mean)./stdDev;
+        end
         stdInstance(isnan(stdInstance)) = 0;
         stdInstance = [stdInstance, instance(:,end)];
         
@@ -131,14 +133,21 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
                 [stdAttributes, mean, stdDev] = standarizer(trainMatrix(:,1:end-1));
                 stdTrain = [stdAttributes, trainMatrix(:,end)];
                 
-                if knn_type == 2
+                if knn_type > 1
                     %Get the weights using FS filter relieff
                     [~, weights] = relieff(stdTrain(:,1:end-1),stdTrain(:,end),K, 'method', 'classification', 'categoricalx', 'off');
 
-                    %ranging the weights
-                    minWeights = min(weights);
-                    maxWeights = max(weights);
-                    weights = (((weights - minWeights).*0.9)./(maxWeights-minWeights))+0.1;
+                    %ranging the weights into the interval [0,1]
+                    weights = (weights - (-1))./2;
+
+                    % If selected kNN, remove unused attributes
+                    if knn_type == 3
+                        threshold = sum(weights)/size(weights,2);
+                        selector = weights >= threshold;
+                        stdTrain = [ stdTrain(:, selector), stdTrain(:, end) ];
+                        mean = mean(:, selector);
+                        stdDev = stdDev(:, selector);
+                    end
                 end
             end
         end
