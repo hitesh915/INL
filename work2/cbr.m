@@ -1,14 +1,21 @@
 function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
-    %CBR Summary of this function goes here
+    %CBR This function implements the case-based reasoining algorithm for
+    %  the kNN, selected kNN and featured kNN algorithms, classifying the
+    %  instances of testMatrix by using the trainMatrix values as neighbors
+    %
     %  INPUTS:
-    %    trainMatrix: Matrix with the training data used by the classifier
-    %    testMatrix: Matrix with the test data to classify
+    %    trainMatrix = Matrix with the training data used by the classifier
+    %    testMatrix = Matrix with the test data to classify
     %    K = K value to use as number of neighbors in the kNN algorithm
     %    r = Operator to use to calculate the distance between individuals
     %    knn_type = Type of kNN algorithm to apply:
     %      - 1 = kNN
     %      - 2 = weighted kNN
     %      - 3 = selected kNN
+    %
+    %  OUTPUTS:
+    %    accuracy = Proportion of hits (between 0 and 1) of the
+    %    classification process for the testMatrix matrix
 
     function [ entropy ] = get_entropy( countsVector )
         vector = countsVector(countsVector ~= 0);
