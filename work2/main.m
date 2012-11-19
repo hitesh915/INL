@@ -1,5 +1,5 @@
 %The dataset used on the experiment
-dataset = 'iris';
+dataset = 'breast-w';
 
 %Several values of K
 K = [1,3,5,7,9,11,13];
@@ -59,7 +59,11 @@ ploting(dataset, K, meansAccuracyList, SEMList);
 
 % Set K and R values to use
 [~, idxMax] = max(meansAccuracyList);
-k = K(mod(idxMax,7));
+idxK = mod(idxMax,7);
+if idxK == 0
+    idxK = 7;
+end
+k = K(idxK);
 r = ceil(idxMax/7);
 
 % Initialize accuracy vectors
