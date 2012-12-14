@@ -1,5 +1,5 @@
 %The dataset used on the experiment
-dataset = 'pen-based';
+dataset = 'breast-w';
 
 %Several values of K
 K = [1,3,5,7,9,11,13];

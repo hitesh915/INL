@@ -1,6 +1,8 @@
 function [model] = train_svm(labels, data, C, sigma)
 %TRAIN_SVM Summary of this function goes here
 %   Detailed explanation goes here
+
+    data = standarizer(data);
     
     % If C is undefined, set C to 2
     if nargin < 3
@@ -52,6 +54,8 @@ function [model] = train_svm(labels, data, C, sigma)
         model.kernel = 'rbf';
         model.sigma = sigma;
         model.data = data;
+        model.labels = labels;
+        model.alpha = alpha;
     end
 end
 
