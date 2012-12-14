@@ -115,7 +115,6 @@ commands/cvx_solver_settings.m
 commands/cvx_where.m
 Contents.m
 cvx_error.m
-cvx_license.dat
 cvx_license.p
 cvx_setup.m
 cvx_startup.m

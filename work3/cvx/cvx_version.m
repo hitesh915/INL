@@ -39,10 +39,10 @@ if nargout <= 5 && nargout, return; end
 
 % Version and build
 cvx_ver   = '2.0 (beta)';
-cvx_bld = '883';
-cvx_bdate = '2012-11-03 12:40:38';
-cvx_ddate = '2012-11-03 12:43:00';
-cvx_dbld = '885';
+cvx_bld = '893';
+cvx_bdate = '2012-12-02 19:32:42';
+cvx_ddate = '2012-12-02 15:21:26';
+cvx_dbld = '890';
 line = '---------------------------------------------------------------------------';
 fprintf( '\n' );
 disp( line );

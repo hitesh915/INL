@@ -65,20 +65,22 @@
 <span id="install"></span><span id="index-0"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="supported-platforms">
 <h2>Supported platforms<a class="headerlink" href="#supported-platforms" title="Permalink to this headline">¶</a></h2>
-<p id="index-1">CVX is supported on the following platforms:</p>
+<p id="index-1">CVX is supported on 32-bit and 64-bit versions of Linux, Mac OSX, and Windows,
+running MATLAB versions 7.5 (R2007b) and later. There are some important platform-specific
+cautions, however:</p>
 <ul class="simple">
-<li>Microsoft Windows, Linux, and Mac OSX</li>
-<li>MATLAB versions 7.5 (R2007b) or later</li>
-<li>Java 1.6 or later required for full CVX Professional support</li>
-<li>32-bit and 64-bit platforms</li>
+<li>Gurobi support requires Matlab 7.7 (R2008b) or later.</li>
+<li>32-bit Linux: the Gurobi solver is not available for this platform, as Gurobi is phasing
+out support for 32-bit Linux altogether.</li>
+<li>Older versions of Mac OS X (e.g. 10.5) ship with Java 1.5. The standard version of
+CVX works properly on this platform, but CVX Professional support requires Java 1.6.
+To restore this support, upgrade your operating system or Java installation.</li>
 </ul>
-<p>As of version 2.0, support for versions of Matlab more than five years old&#8212;specifically,
-Matlab 7.4 (R2007a) or older&#8212;has been discontinued. If you need to use CVX with these
-older versions of Matlab, please use CVX 1.22 or earlier, which will remain available
-indefinitely on the CVX Research web site.</p>
-<p>It is theoretically possible to use CVX on other platforms, but we are
-unable to provide support of any kind. In particular, you will have to compile
-the MEX files for both CVX and the solvers.</p>
+<p>As of version 2.0, support for versions of Matlab more than five years
+old&#8212;specifically, Matlab 7.4 (R2007a) or older&#8212;has been discontinued. If you need
+to use CVX with these older versions of Matlab, please use CVX 1.22 or earlier, which
+will remain available indefinitely on the CVX Research web site. However, this version
+is no longer supported, and will not receive bug fixes or improvements.</p>
 </div>
 <div class="section" id="installation-instructions">
 <h2>Installation instructions<a class="headerlink" href="#installation-instructions" title="Permalink to this headline">¶</a></h2>
