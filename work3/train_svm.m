@@ -16,11 +16,12 @@ function [model] = train_svm(labels, data, C, sigma)
     if nargin < 4
         kernel = data*data';
     else
-        kernel = data*data' / sigma^2;
-        d = diag(kernel);
-        kernel = kernel - ones(n,1)*d'/2;
-        kernel = kernel - d*ones(1,n)/2;
-        kernel = exp(kernel);
+        kernel = rbfKernel(data, data, sigma);
+%         kernel = data*data' / sigma^2;
+%         d = diag(kernel);
+%         kernel = kernel - ones(n,1)*d'/2;
+%         kernel = kernel - d*ones(1,n)/2;
+%         kernel = exp(kernel);
     end
     
     % Create output variable
@@ -38,6 +39,7 @@ function [model] = train_svm(labels, data, C, sigma)
     cvx_end
  
     epsilon = 0.0001;
+    sv_filter = (alpha > epsilon & alpha < (C - epsilon));
     svii = find( alpha > epsilon & alpha < (C - epsilon));
     
     % Obtain model parameters
@@ -52,10 +54,10 @@ function [model] = train_svm(labels, data, C, sigma)
     model.sv = sv;
     if nargin >= 4
         model.kernel = 'rbf';
+        model.sv_alphas = alpha(svii,:);
+        model.sv_labels = labels(svii,:);
+        model.sv_points = data(svii,:);
         model.sigma = sigma;
-        model.data = data;
-        model.labels = labels;
-        model.alpha = alpha;
     end
 end
 
