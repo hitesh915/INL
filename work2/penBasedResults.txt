@@ -1,0 +1,212 @@
+Classes glossay:
+0	=>	1
+1	=>	2
+2	=>	3
+3	=>	4
+4	=>	5
+5	=>	6
+6	=>	7
+7	=>	8
+8	=>	9
+9	=>	10
+
+K:	1
+R:	1
+Mean accuracy:	0.9944
+Accuracy standard dev.:	0.0019
+Standard Error of Mean:	0.0007
+
+K:	1
+R:	3
+Mean accuracy:	0.9938
+Accuracy standard dev.:	0.0020
+Standard Error of Mean:	0.0008
+
+K:	1
+R:	5
+Mean accuracy:	0.9930
+Accuracy standard dev.:	0.0024
+Standard Error of Mean:	0.0009
+
+K:	1
+R:	7
+Mean accuracy:	0.9913
+Accuracy standard dev.:	0.0023
+Standard Error of Mean:	0.0009
+
+K:	1
+R:	9
+Mean accuracy:	0.9901
+Accuracy standard dev.:	0.0027
+Standard Error of Mean:	0.0010
+
+K:	1
+R:	11
+Mean accuracy:	0.9895
+Accuracy standard dev.:	0.0027
+Standard Error of Mean:	0.0010
+
+K:	1
+R:	13
+Mean accuracy:	0.9885
+Accuracy standard dev.:	0.0025
+Standard Error of Mean:	0.0009
+
+K:	2
+R:	1
+Mean accuracy:	0.9938
+Accuracy standard dev.:	0.0021
+Standard Error of Mean:	0.0008
+
+K:	2
+R:	3
+Mean accuracy:	0.9935
+Accuracy standard dev.:	0.0015
+Standard Error of Mean:	0.0006
+
+K:	2
+R:	5
+Mean accuracy:	0.9930
+Accuracy standard dev.:	0.0019
+Standard Error of Mean:	0.0007
+
+K:	2
+R:	7
+Mean accuracy:	0.9920
+Accuracy standard dev.:	0.0020
+Standard Error of Mean:	0.0008
+
+K:	2
+R:	9
+Mean accuracy:	0.9911
+Accuracy standard dev.:	0.0015
+Standard Error of Mean:	0.0006
+
+K:	2
+R:	11
+Mean accuracy:	0.9907
+Accuracy standard dev.:	0.0021
+Standard Error of Mean:	0.0008
+
+K:	2
+R:	13
+Mean accuracy:	0.9894
+Accuracy standard dev.:	0.0025
+Standard Error of Mean:	0.0010
+
+K:	3
+R:	1
+Mean accuracy:	0.9934
+Accuracy standard dev.:	0.0019
+Standard Error of Mean:	0.0007
+
+K:	3
+R:	3
+Mean accuracy:	0.9930
+Accuracy standard dev.:	0.0021
+Standard Error of Mean:	0.0008
+
+K:	3
+R:	5
+Mean accuracy:	0.9925
+Accuracy standard dev.:	0.0028
+Standard Error of Mean:	0.0010
+
+K:	3
+R:	7
+Mean accuracy:	0.9910
+Accuracy standard dev.:	0.0027
+Standard Error of Mean:	0.0010
+
+K:	3
+R:	9
+Mean accuracy:	0.9894
+Accuracy standard dev.:	0.0028
+Standard Error of Mean:	0.0011
+
+K:	3
+R:	11
+Mean accuracy:	0.9891
+Accuracy standard dev.:	0.0029
+Standard Error of Mean:	0.0011
+
+K:	3
+R:	13
+Mean accuracy:	0.9888
+Accuracy standard dev.:	0.0031
+Standard Error of Mean:	0.0012
+
+COMPARATIVE (K = 1 R= 1)
+----------------------
+
+kNN:
+Mean accuracy:		0.9944
+Accuracy standard dev.:	0.0019
+Standard Error of Mean:	0.0007
+
+Weighted kNN:
+Mean accuracy:		0.9944
+Accuracy standard dev.:	0.0020
+Standard Error of Mean:	0.0007
+
+Selected kNN:
+Mean accuracy:		0.9542
+Accuracy standard dev.:	0.0065
+Standard Error of Mean:	0.0025
+
+STUDENT PAIRED T-TEST
+=========================
+
+Paired T test (alpha=0.05): CBR(kNN) vs CBR(weightedkNN)
+---------------------------------------------------------
+H0:	kNN == weightedKNN
+H1:	kNN != weightedKNN
+
+P-value:	1.0000
+Confidence interval:	[-0.0003, 0.0003]
+Result: The null hyphotesis (H0) cannot be rejected.
+
+Paired T test (alpha=0.05): CBR(kNN) vs CBR(selectedKNN)
+---------------------------------------------------------
+H0:	kNN == selectedKNN
+H1:	kNN != selectedKNN
+
+P-value:	0.0000
+Confidence interval:	[0.0351, 0.0451]
+Result: H0 rejection! kNN significantly better than selectedKNN
+
+Paired T test (alpha=0.05): CBR(weightedkNN) vs CBR(selectedKNN)
+---------------------------------------------------------
+H0:	weightedKNN == selectedKNN
+H1:	weightedKNN != selectedKNN
+
+P-value:	0.0000
+Confidence interval:	[0.0350, 0.0452]
+Result: H0 rejection! weightedKNN significantly better than selectedKNN
+
+WILCOXON SIGNED-RANK TEST
+=========================
+
+Wilcoxon signed-rank test (alpha=0.05): CBR(kNN) vs CBR(weightedkNN)
+------------------------------------------------------------------
+H0:	kNN == weightedKNN
+H1:	kNN != weightedKNN
+
+P-value:	1.0000
+Result: The null hyphotesis (H0) cannot be rejected.
+
+Wilcoxon signed-rank test: CBR(kNN) vs CBR(selectedKNN)
+---------------------------------------------------------
+H0:	kNN == selectedKNN
+H1:	kNN != selectedKNN
+
+P-value:	0.0020
+Result: H0 rejection! There ara a significant difference under Wilcoxon test
+
+Wilcoxon signed-rank test: CBR(weightedKNN) vs CBR(selectedKNN)
+-------------------------------------------------------------
+H0:	weightedKNN == selectedKNN
+H1:	weightedKNN != selectedKNN
+
+P-value:	0.0020
+Result: H0 rejection! There ara a significant difference under Wilcoxon test

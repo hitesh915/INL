@@ -1,0 +1,14 @@
+\contentsline {table}{\numberline {1}{\ignorespaces Statistics values for pen-based dataset}}{8}
+\contentsline {table}{\numberline {2}{\ignorespaces t-test: kNN \emph {vs} weightedKNN (pen-based)}}{8}
+\contentsline {table}{\numberline {3}{\ignorespaces Wilcoxon test: kNN \emph {vs} weightedKNN (pen-based)}}{8}
+\contentsline {table}{\numberline {4}{\ignorespaces t-test: kNN \emph {vs} selected kNN (pen-based)}}{9}
+\contentsline {table}{\numberline {5}{\ignorespaces Wilcoxon test: kNN \emph {vs} selected KNN (pen-based)}}{9}
+\contentsline {table}{\numberline {6}{\ignorespaces t-test: weighted kNN \emph {vs} selected kNN (pen-based)}}{9}
+\contentsline {table}{\numberline {7}{\ignorespaces Wilcoxon test: weighted kNN \emph {vs} selected KNN (pen-based)}}{9}
+\contentsline {table}{\numberline {8}{\ignorespaces Statistics values for breast-w dataset}}{11}
+\contentsline {table}{\numberline {9}{\ignorespaces t-test: kNN \emph {vs} weighted kNN (breast-w)}}{12}
+\contentsline {table}{\numberline {10}{\ignorespaces Wilcoxon test: kNN \emph {vs} weighted KNN (breast-w)}}{12}
+\contentsline {table}{\numberline {11}{\ignorespaces t-test: kNN \emph {vs} selected kNN (breast-w)}}{12}
+\contentsline {table}{\numberline {12}{\ignorespaces Wilcoxon test: kNN \emph {vs} selected KNN (breast-w)}}{12}
+\contentsline {table}{\numberline {13}{\ignorespaces t-test: weighted kNN \emph {vs} selected kNN (breast-w)}}{12}
+\contentsline {table}{\numberline {14}{\ignorespaces Wilcoxon test: weighted kNN \emph {vs} selected KNN (breast-w)}}{12}

@@ -16,8 +16,10 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
     %  OUTPUTS:
     %    accuracy = Proportion of hits (between 0 and 1) of the
     %    classification process for the testMatrix matrix
-
+    
+    
     function [ entropy ] = get_entropy( countsVector )
+    %Function that calc the relative entropy of a set of predictors
         vector = countsVector(countsVector ~= 0);
         
         nElements = sum(vector);
@@ -133,7 +135,7 @@ function [ accuracy ] = cbr( trainMatrix, testMatrix, K, r, knn_type )
             numSuccess = numSuccess + 1;
             
             % If there was conflict, learn example
-            if get_entropy(countClasses) >= 0.9
+            if get_entropy(countClasses) >= 0.9 || class ~= instance(end)
                 trainMatrix = [trainMatrix ; instance];
                 
                 %RE-standarize data

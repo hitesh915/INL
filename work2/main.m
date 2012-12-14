@@ -1,5 +1,5 @@
 %The dataset used on the experiment
-dataset = 'breast-w';
+dataset = 'pen-based';
 
 %Several values of K
 K = [1,3,5,7,9,11,13];
@@ -39,10 +39,10 @@ for r = R
         accuracySEM = accuracySTD/sqrt(size(K,2));
         
         %Print informaption about the results of the execution
-        fprintf(strcat('K:\t',num2str(k),'\nR:\t', num2str(r),'\n'));
-        fprintf(strcat('Mean accuracy:\t\t', num2str(accuracyMean), '\n'));
-        fprintf(strcat('Accuracy standard dev.:\t', num2str(accuracySTD), '\n'));
-        fprintf(strcat('Standard Error of Mean:\t', num2str(accuracySEM), '\n\n'));
+        fprintf('K:\t%d\nR:\t%d\n',r,k);
+        fprintf('Mean accuracy:\t%.4f\n',accuracyMean);
+        fprintf('Accuracy standard dev.:\t%.4f\n',accuracySTD);
+        fprintf('Standard Error of Mean:\t%.4f\n\n',accuracySEM);
         
         %Add the info to the statistics list
         meansAccuracyList = [meansAccuracyList, accuracyMean];
@@ -85,10 +85,10 @@ kAccuracySTD = std(kAccuracies);
 kAccuracySEM = kAccuracySTD/sqrt(size(K,2));
 
 % Show results for kNN
-fprintf(strcat('COMPARATIVE (K = ',num2str(k),' R= ', num2str(r),')\n----------------------\n\nkNN:\n'));
-fprintf(strcat('Mean accuracy:\t\t', num2str(kAccuracyMean), '\n'));
-fprintf(strcat('Accuracy standard dev.:\t', num2str(kAccuracySTD), '\n'));
-fprintf(strcat('Standard Error of Mean:\t', num2str(kAccuracySEM), '\n'));
+fprintf('COMPARATIVE (K = %d R= %d)\n----------------------\n\nkNN:\n',k,r);
+fprintf('Mean accuracy:\t\t%.4f\n',kAccuracyMean);
+fprintf('Accuracy standard dev.:\t%.4f\n',kAccuracySTD);
+fprintf('Standard Error of Mean:\t%.4f\n',kAccuracySEM);
 
 % Calculate mean accuracy for the weighted kNN algorithm
 wAccuracyMean = mean(wAccuracies);
@@ -97,9 +97,9 @@ wAccuracySEM = wAccuracySTD/sqrt(size(K,2));
 
 % Show results for weighted kNN
 fprintf('\nWeighted kNN:\n');
-fprintf(strcat('Mean accuracy:\t\t', num2str(wAccuracyMean), '\n'));
-fprintf(strcat('Accuracy standard dev.:\t', num2str(wAccuracySTD), '\n'));
-fprintf(strcat('Standard Error of Mean:\t', num2str(wAccuracySEM), '\n'));
+fprintf('Mean accuracy:\t\t%.4f\n',wAccuracyMean);
+fprintf('Accuracy standard dev.:\t%.4f\n',wAccuracySTD);
+fprintf('Standard Error of Mean:\t%.4f\n',wAccuracySEM);
 
 % Calculate mean accuracy for the selected kNN algorithm
 sAccuracyMean = mean(sAccuracies);
@@ -108,9 +108,12 @@ sAccuracySEM = sAccuracySTD/sqrt(size(K,2));
 
 % Show results for segmented kNN
 fprintf('\nSelected kNN:\n');
-fprintf(strcat('Mean accuracy:\t\t', num2str(sAccuracyMean), '\n'));
-fprintf(strcat('Accuracy standard dev.:\t', num2str(sAccuracySTD), '\n'));
-fprintf(strcat('Standard Error of Mean:\t', num2str(sAccuracySEM), '\n'));
+fprintf('Mean accuracy:\t\t%.4f\n',sAccuracyMean);
+fprintf('Accuracy standard dev.:\t%.4f\n',sAccuracySTD);
+fprintf('Standard Error of Mean:\t%.4f\n',sAccuracySEM);
+
+
+fprintf('\nSTUDENT PAIRED T-TEST\n=========================\n');
 
 %Perform a paired t-test comparing simpleKnn with weightedKnn, with a
 %significance of 0.05.
@@ -118,11 +121,14 @@ fprintf('\nPaired T test (alpha=0.05): CBR(kNN) vs CBR(weightedkNN)\n-----------
 
 [simpleVsWeightedH,simpleVsWeightedPValue, simpleVsWeightedCI]  = ttest(kAccuracies, wAccuracies, 0.05, 'both', 2);
 
+fprintf('\nP-value:\t%.4f\n',simpleVsWeightedPValue);
+fprintf('Confidence interval:\t[%.4f, %.4f]\n',simpleVsWeightedCI(1),simpleVsWeightedCI(2));
+
 if simpleVsWeightedH == 1
     if simpleVsWeightedCI(2) < 0
-        fprintf('H0 rejection! weightedKNN significantly better than kNN\n');
+        fprintf('Result: H0 rejection! weightedKNN significantly better than kNN\n');
     else
-        fprintf('H0 rejection! kNN significantly better than weightedKNN\n');
+        fprintf('Result: H0 rejection! kNN significantly better than weightedKNN\n');
     end
 else
     fprintf('Result: The null hyphotesis (H0) cannot be rejected.\n');
@@ -134,12 +140,74 @@ fprintf('\nPaired T test (alpha=0.05): CBR(kNN) vs CBR(selectedKNN)\n-----------
 
 [simpleVsSelectedH,simpleVsSelectedPValue, simpleVsSelectedCI]  = ttest(kAccuracies, sAccuracies, 0.05, 'both', 2);
 
+fprintf('\nP-value:\t%.4f\n',simpleVsSelectedPValue);
+fprintf('Confidence interval:\t[%.4f, %.4f]\n',simpleVsSelectedCI(1),simpleVsSelectedCI(2));
+
 if simpleVsSelectedH == 1
     if simpleVsSelectedCI(2) < 0
-        fprintf('H0 rejection! selectedKNN significantly better than kNN\n');
+        fprintf('Result: H0 rejection! selectedKNN significantly better than kNN\n');
     else
-        fprintf('H0 rejection! kNN significantly better than selectedKNN\n');
+        fprintf('Result: H0 rejection! kNN significantly better than selectedKNN\n');
     end
+else
+    fprintf('Result: The null hyphotesis (H0) cannot be rejected.\n');
+end
+
+%Perform a paired t-test comparing weightedKNN with selectedKNN, with a
+%significance of 0.05.
+fprintf('\nPaired T test (alpha=0.05): CBR(weightedkNN) vs CBR(selectedKNN)\n---------------------------------------------------------\nH0:\tweightedKNN == selectedKNN\nH1:\tweightedKNN != selectedKNN\n');
+
+[simpleVsSelectedH,simpleVsSelectedPValue, simpleVsSelectedCI]  = ttest(wAccuracies, sAccuracies, 0.05, 'both', 2);
+
+fprintf('\nP-value:\t%.4f\n',simpleVsSelectedPValue);
+fprintf('Confidence interval:\t[%.4f, %.4f]\n',simpleVsSelectedCI(1),simpleVsSelectedCI(2));
+
+if simpleVsSelectedH == 1
+    if simpleVsSelectedCI(2) < 0
+        fprintf('Result: H0 rejection! selectedKNN significantly better than weightedKNN\n');
+    else
+        fprintf('Result: H0 rejection! weightedKNN significantly better than selectedKNN\n');
+    end
+else
+    fprintf('Result: The null hyphotesis (H0) cannot be rejected.\n');
+end
+
+
+%Wilcoxon signed test
+fprintf('\nWILCOXON SIGNED-RANK TEST\n=========================\n');
+%Perform a paired t-test comparing simpleKnn with weightedKnn, with a
+%significance of 0.05.
+fprintf('\nWilcoxon signed-rank test (alpha=0.05): CBR(kNN) vs CBR(weightedkNN)\n------------------------------------------------------------------\nH0:\tkNN == weightedKNN\nH1:\tkNN != weightedKNN\n');
+
+[simVsW_PValue_wilcoxon, simVsW_H_wilcoxon]  = signrank(kAccuracies, wAccuracies, 'alpha', 0.05);
+
+fprintf('\nP-value:\t%.4f\n',simVsW_PValue_wilcoxon);
+if simVsW_H_wilcoxon == 1
+    fprintf('Result: H0 rejection! There ara a significant difference under Wilcoxon test\n');
+else
+    fprintf('Result: The null hyphotesis (H0) cannot be rejected.\n');
+end
+
+%Perform a paired t-test comparing simpleKnn with selectedKNN, with a
+%significance of 0.05.
+fprintf('\nWilcoxon signed-rank test: CBR(kNN) vs CBR(selectedKNN)\n---------------------------------------------------------\nH0:\tkNN == selectedKNN\nH1:\tkNN != selectedKNN\n');
+
+[simVsSel_PValue_wilcoxon, simVsSel_H_wilcoxon]  = signrank(kAccuracies, sAccuracies, 'alpha', 0.05);
+fprintf('\nP-value:\t%.4f\n',simVsSel_PValue_wilcoxon);
+if simVsSel_H_wilcoxon == 1
+    fprintf('Result: H0 rejection! There ara a significant difference under Wilcoxon test\n');
+else
+    fprintf('Result: The null hyphotesis (H0) cannot be rejected.\n');
+end
+
+%Perform a paired t-test comparing weightedKnn with selectedKNN, with a
+%significance of 0.05.
+fprintf('\nWilcoxon signed-rank test: CBR(weightedKNN) vs CBR(selectedKNN)\n-------------------------------------------------------------\nH0:\tweightedKNN == selectedKNN\nH1:\tweightedKNN != selectedKNN\n');
+
+[wVsSel_PValue_wilcoxon, wVsSel_H_wilcoxon]  = signrank(wAccuracies, sAccuracies, 'alpha', 0.05);
+fprintf('\nP-value:\t%.4f\n',wVsSel_PValue_wilcoxon);
+if wVsSel_H_wilcoxon == 1
+    fprintf('Result: H0 rejection! There ara a significant difference under Wilcoxon test\n');
 else
     fprintf('Result: The null hyphotesis (H0) cannot be rejected.\n');
 end

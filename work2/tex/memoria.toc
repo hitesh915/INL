@@ -1,0 +1,27 @@
+\contentsline {section}{\numberline {1}Architecture of the code}{2}
+\contentsline {paragraph}{}{2}
+\contentsline {paragraph}{}{2}
+\contentsline {paragraph}{}{3}
+\contentsline {paragraph}{}{3}
+\contentsline {subsection}{\numberline {1.1}The 10-fold parser}{3}
+\contentsline {paragraph}{}{3}
+\contentsline {subsection}{\numberline {1.2}The kNN implementation}{4}
+\contentsline {paragraph}{}{4}
+\contentsline {subsection}{\numberline {1.3}The weighted kNN implementation}{4}
+\contentsline {paragraph}{}{4}
+\contentsline {paragraph}{}{4}
+\contentsline {subsection}{\numberline {1.4}The selected kNN implementation}{5}
+\contentsline {paragraph}{}{5}
+\contentsline {subsection}{\numberline {1.5}The case-based reasoning algorithm}{5}
+\contentsline {paragraph}{}{5}
+\contentsline {paragraph}{}{5}
+\contentsline {paragraph}{}{6}
+\contentsline {section}{\numberline {2}Analysis of the datasets}{7}
+\contentsline {paragraph}{}{7}
+\contentsline {subsection}{\numberline {2.1}Analysis of the \emph {pen-based} dataset}{7}
+\contentsline {paragraph}{}{7}
+\contentsline {paragraph}{}{10}
+\contentsline {subsection}{\numberline {2.2}Analysis of the \emph {breast-w} dataset}{10}
+\contentsline {paragraph}{}{10}
+\contentsline {paragraph}{}{13}
+\contentsline {paragraph}{}{13}
