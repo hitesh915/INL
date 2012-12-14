@@ -18,6 +18,7 @@ end
 C = 2;
 n = size(data, 1);
 
+
 %Dual form
 cvx_clear
 cvx_begin
@@ -29,3 +30,7 @@ cvx_begin
        sum(alpha.*labels)==0
 cvx_end
 
+wtrain2=data'*(alpha.*labels);
+epsilon=0.0001;
+svii = find( alpha > epsilon & alpha < (C - epsilon));
+btrain2 =  (1/length(svii))*sum(labels(svii) - kernel(svii,:)*alpha.*labels(svii));
