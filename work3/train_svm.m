@@ -1,4 +1,4 @@
-function [] = train_svm(labels, data, C, sigma)
+function [model] = train_svm(labels, data, C, sigma)
 %TRAIN_SVM Summary of this function goes here
 %   Detailed explanation goes here
     
@@ -34,7 +34,24 @@ function [] = train_svm(labels, data, C, sigma)
            alpha<=C
            sum(alpha.*labels)==0
     cvx_end
+ 
+    epsilon = 0.0001;
+    svii = find( alpha > epsilon & alpha < (C - epsilon));
     
-    alpha
+    % Obtain model parameters
+    model_b = (1/length(svii))*sum(labels(svii) - kernel(svii,:)*alpha.*labels(svii));
+    model_w = data'*(alpha.*labels);
+
+    % Obtain support vectors
+    sv = data(alpha > epsilon & alpha < (C - epsilon), :);
+    
+    % Create model structure
+    model = struct('kernel', 'linear', 'w', model_w, 'b', model_b);
+    model.sv = sv;
+    if nargin >= 4
+        model.kernel = 'rbf';
+        model.sigma = sigma;
+        model.data = data;
+    end
 end
 
