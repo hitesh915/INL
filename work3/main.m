@@ -17,5 +17,5 @@ testData = test1(:,1:end-1);
 testLabels = test1(:,end);
 trainLabels(trainLabels == 2) = -1;
 
-svmTrain = train_svm(trainLabels,trainData,1);
+svmTrain = train_svm(trainLabels,trainData,2, 2);
 predicted = test_svm(svmTrain,testData);

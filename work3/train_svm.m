@@ -22,6 +22,7 @@ function [model] = train_svm(labels, data, C, sigma)
 %         kernel = kernel - ones(n,1)*d'/2;
 %         kernel = kernel - d*ones(1,n)/2;
 %         kernel = exp(kernel);
+%         kernel
     end
     
     % Create output variable
