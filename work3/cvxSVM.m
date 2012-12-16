@@ -1,36 +1,24 @@
-%data = data';
-rbf_kernel = false;
+shufflePart = randperm(size(data,1))';
 
-% If RBF kernel (use sig parameter)
-if rbf_kernel
-    n = size(data, 1);
-    kernel = data*data' / sig^2;
-    d = diag(K);
-    kernel = kernel - ones(n,1)*d'/2;
-    kernel = kernel - d*ones(1,n)/2;
-    kernel = exp(K);
-    
-% If linear kernel
-else
-    kernel = data*data';
-end
+rng(42);
 
-C = 2;
-n = size(data, 1);
+data = data(shufflePart, :);
+labels = labels(shufflePart, :);
 
+trainData = data(1:80,:);
+trainLabels = labels(1:80,:);
 
-%Dual form
-cvx_clear
-cvx_begin
-    variables alpha(n)
-    maximize( sum(alpha) -  0.5*quad_form(labels.*alpha,kernel))
-    subject to
-       alpha>=0
-       alpha<=C
-       sum(alpha.*labels)==0
-cvx_end
+testData = data(81:end,:);
+testLabels = labels(81:end,:);
 
-wtrain2=data'*(alpha.*labels);
-epsilon=0.0001;
-svii = find( alpha > epsilon & alpha < (C - epsilon));
-btrain2 =  (1/length(svii))*sum(labels(svii) - kernel(svii,:)*alpha.*labels(svii));
+trainOurSVM = train_svm(trainLabels, trainData, 1, 1);
+[hAxis,hLines] = svmplotdata(trainData,trainLabels,trainOurSVM);
+
+predicted = test_svm(trainOurSVM, testData);
+
+%trainSVM = svmtrain(trainData, trainLabels, 'method', 'QP','kernel_function','rbf','showplot',true,'boxconstraint',1,'rbf_sigma',1);
+% predicted = svmclassify(trainSVM, testData);
+% 
+% predicted
+% 
+1-sum(predicted~=testLabels)/size(testLabels, 1)
