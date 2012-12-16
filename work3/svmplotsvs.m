@@ -23,7 +23,7 @@ Xorig = X; Yorig = Y;
 X = svm_struct.stdTrain(1) * (X + svm_struct.meanTrain(1));
 Y = svm_struct.stdTrain(2) * (Y + svm_struct.meanTrain(2));
 
-[~, Z] = test_svm(svm_struct,[X(:),Y(:)]); 
+[~, Z] = test_svm(svm_struct,[Y(:),X(:)]); 
 
 Z
 

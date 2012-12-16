@@ -17,7 +17,7 @@ function [model] = train_svm(labels, data, C, sigma)
     
     % Define linear/RBF kernel
     if nargin < 4
-        kernel = linearKernel(data, data);
+        kernel = data*data';
     else
         kernel = rbfKernel(data, data, sigma);
     end
@@ -27,23 +27,31 @@ function [model] = train_svm(labels, data, C, sigma)
     
     %Dual form (using quadratic programming via CVX)
     cvx_clear
+%     cvx_begin
+%         variable alpha(n)
+%         maximize(sum(alpha) -  0.5*quad_form(labels.*alpha,kernel))
+%         subject to
+%            alpha>=0
+%            alpha<=C
+%            sum(alpha.*labels)==0
+%     cvx_end
+
     cvx_begin
         variable alpha(n)
-        maximize(sum(alpha) -  0.5*quad_form(labels.*alpha,kernel))
+        maximize(alpha'*ones(n,1)-0.5*alpha'*(diag(labels)*kernel*diag(labels))*alpha)
         subject to
-           alpha>=0
-           alpha<=C
+           0<= alpha <=C
            sum(alpha.*labels)==0
     cvx_end
 
-    svii = find( alpha > eps & alpha < (C - eps));
+    
+    svii = find( alpha > sqrt(eps));
     
     % Obtain model parameters
     %model_b = (1/length(svii))*sum(labels(svii) - kernel(svii,:)*alpha.*labels(svii));
     %model_w = data'*(alpha.*labels);
 
     % Obtain support vectors data
-    sv = data(svii, :);
     sv_alphas = alpha(svii,:);
     sv_labels = labels(svii,:);
     sv_points = data(svii,:);
@@ -60,16 +68,21 @@ function [model] = train_svm(labels, data, C, sigma)
         end
     end
     model_b = model_b / size(sv_points,1);
+
+
+%     [~,maxPos] = max(alpha);
+%     model_b = labels(maxPos) - sum((sv_alphas.*sv_labels).*kernel(svii,maxPos));
     
     % Create model structure
     model = struct('kernel', 'linear', 'w', model_w, 'b', model_b);
     model.sv_points = sv_points;
     model.meanTrain = mean;
+    model.sv_alphas = sv_alphas;
+    model.sv_labels = sv_labels;
     model.stdTrain = std;
     if nargin >= 4
         model.kernel = 'rbf';
         model.sv_alphas = sv_alphas;
-        model.sv_labels = sv_labels;
         model.sigma = sigma;
     end
 end

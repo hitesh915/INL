@@ -1,4 +1,4 @@
-dataset = 'breast-w';
+dataset = 'ionosphere';
 
 data = [];
  for fold = 1:10
@@ -6,19 +6,23 @@ data = [];
     data = [data;{train,test}];
  end
  
- train1 = data{1,1};
- test1 = data{1,2};
+accuracies = zeros(10,1);
 
-trainData = train1(:,1:end-1);
-trainLabels = train1(:,end);
-trainLabels(trainLabels == 2) = -1;
+for k = 1:10
+    train = data{k,1};
+    test = data{k,2};
+    
+    trainData = train(:,1:end-1);
+    trainLabels = train(:,end);
+    trainLabels(trainLabels == 2) = -1;
 
-testData = test1(:,1:end-1);
-testLabels = test1(:,end);
-testLabels(testLabels == 2) = -1;
+    testData = test(:,1:end-1);
+    testLabels = test(:,end);
+    testLabels(testLabels == 2) = -1;
+    svmTrain = train_svm(trainLabels,trainData,0.5,4);
+    predicted = test_svm(svmTrain,testData);
+    accuracies(k) = 1- sum(predicted~=testLabels)/size(testLabels,1)
+end
 
-%svmTrainMatLab = svmtrain(trainData, trainLabels, 'method', 'QP', 'kernel_function','rbf');
-
-svmTrain = train_svm(trainLabels,trainData,2,2);
-predicted = test_svm(svmTrain,testData);
-1- sum(predicted~=testLabels)/size(testLabels,1)
+mean(accuracies)
+std(accuracies)
