@@ -20,7 +20,5 @@ testLabels(testLabels == 2) = -1;
 %svmTrainMatLab = svmtrain(trainData, trainLabels, 'method', 'QP', 'kernel_function','rbf');
 
 svmTrain = train_svm(trainLabels,trainData,2,2);
-
 predicted = test_svm(svmTrain,testData);
-% 
 1- sum(predicted~=testLabels)/size(testLabels,1)

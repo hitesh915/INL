@@ -2,6 +2,9 @@ function [model] = train_svm(labels, data, C, sigma)
 %TRAIN_SVM Summary of this function goes here
 %   Detailed explanation goes here
 
+    mean = nanmean(data);
+    std = nanstd(data);
+
     data = standarizer(data);
     
     % If C is undefined, set C to 2
@@ -17,12 +20,6 @@ function [model] = train_svm(labels, data, C, sigma)
         kernel = linearKernel(data, data);
     else
         kernel = rbfKernel(data, data, sigma);
-%         kernel = data*data' / sigma^2;
-%         d = diag(kernel);
-%         kernel = kernel - ones(n,1)*d'/2;
-%         kernel = kernel - d*ones(1,n)/2;
-%         kernel = exp(kernel);
-%         kernel
     end
     
     % Create output variable
@@ -38,9 +35,8 @@ function [model] = train_svm(labels, data, C, sigma)
            alpha<=C
            sum(alpha.*labels)==0
     cvx_end
- 
-    epsilon = 0.0001;
-    svii = find( alpha > epsilon & alpha < (C - epsilon));
+
+    svii = find( alpha > eps & alpha < (C - eps));
     
     % Obtain model parameters
     %model_b = (1/length(svii))*sum(labels(svii) - kernel(svii,:)*alpha.*labels(svii));
@@ -67,12 +63,13 @@ function [model] = train_svm(labels, data, C, sigma)
     
     % Create model structure
     model = struct('kernel', 'linear', 'w', model_w, 'b', model_b);
-    model.sv = sv;
+    model.sv_points = sv_points;
+    model.meanTrain = mean;
+    model.stdTrain = std;
     if nargin >= 4
         model.kernel = 'rbf';
-        model.sv_alphas = alpha(svii,:);
-        model.sv_labels = labels(svii,:);
-        model.sv_points = data(svii,:);
+        model.sv_alphas = sv_alphas;
+        model.sv_labels = sv_labels;
         model.sigma = sigma;
     end
 end

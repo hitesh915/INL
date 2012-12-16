@@ -1,11 +1,17 @@
-function [ predicted ] = test_svm( svmStruct, test )
+function [ predicted, f ] = test_svm( svmStruct, test )
 %TEST_SVM Summary of this function goes here
 %   Detailed explanation goes here
 
     w = svmStruct.w;
     b = svmStruct.b;
-    test = standarizer(test);
     
+    % Standarize test data
+    test = bsxfun(@minus, test, svmStruct.meanTrain);
+    test = bsxfun(@rdivide, test, svmStruct.meanTrain);
+    test(isnan(test)) = 0;
+    
+    % Initialize f vector
+    f = zeros(size(test,1),1);
     
     if strcmp(svmStruct.kernel,'linear')
         predicted = sign(test*w+b);
@@ -18,7 +24,8 @@ function [ predicted ] = test_svm( svmStruct, test )
             for i = 1:size(svmStruct.sv_points,1)
                 result = result + (svmStruct.sv_alphas(i) * svmStruct.sv_labels(i) * kernels(i,n));
             end
-            predicted(n) = sign(result + b);
+            f(n) = result + b;
+            predicted(n) = sign(f(n));
         end
     end
 end
