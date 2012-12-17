@@ -1,34 +1,28 @@
 function [labels] = test_adaboost(model, data)
-    % Standarize test data
-    data = bsxfun(@minus, data, model.meanTrain);
-    data = bsxfun(@rdivide, data, model.stdTrain);
+    function y = classify_data(h, x)
+        if(h.direction == 1)
+            y =  double(x(:,h.dimension) >= h.threshold);
+        else
+            y =  double(x(:,h.dimension) < h.threshold);
+        end
+        y(y == 0) = -1;
+    end
+
+    % Retrieve weak models
+    models = model.models;
+    
+    % Standardize test data
+    data = bsxfun(@minus, data, model.mean);
+    data = bsxfun(@rdivide, data, model.std);
     data(isnan(data)) = 0;
     
-    % Get number of individuals
-    nind = size(data,1);
-    
-    labels = zeros(size(data,1),1);
-    
-    for i = 1:nind
-        wP = 0;
-        wN = 0;
-        for t = 1:model.T            
-            output = sign(sum(data(i,:)' .* model.models(t)) + model.offsets(t));
-            if output > 0
-                wP = wN + model.alphas(t);
-            else
-                wN = wN + model.alphas(t);
-            end
-           
-            %labels(i) = labels(i) + model.alphas(t) * output;
-        end
-        
-        %labels(i) = sign(labels(i));
-        if wP > wN
-            labels(i) = 1;
-        else
-            labels(i) = -1;
-        end
+    % Add results of the single weak classifiers weighted by their alpha 
+    labels=zeros(size(data,1),1);
+    for t=1:length(model);
+        labels = labels + models(t).alpha * classify_data(models(t), data);
     end
+    
+    % If sum of weak classifiers < 0, class = -1, +1 otherwise
+    labels = sign(labels);
 end
 

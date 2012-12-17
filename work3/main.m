@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 % dataset = 'breast-w';
 % 
 % data = [];
@@ -8,6 +9,9 @@
 %  
 parametersRBF = cell(64, 2);
 parametersLinear = cell(8,1);
+=======
+dataset = 'breast-w';
+>>>>>>> Reprogrammed the adaboost algorithm with thresholds
 
 cvPartitions = crossValPartition((1:size(data,1))',10,42);
 

@@ -5,13 +5,13 @@ rng(42);
 data = data(shufflePart, :);
 labels = labels(shufflePart, :);
 
-trainData = data(1:300,:);
-trainLabels = labels(1:300,:);
+trainData = data(1:70,:);
+trainLabels = labels(1:70,:);
 
-testData = data(301:end,:);
-testLabels = labels(301:end,:);
+testData = data(71:end,:);
+testLabels = labels(71:end,:);
 
-trainOurSVM = train_adaboost(trainLabels, trainData, 7);
+trainOurSVM = train_adaboost(trainLabels, trainData, 50);
 predicted = test_adaboost(trainOurSVM, testData);
-plotAdaboost(trainOurSVM, trainData, trainLabels);
+%plotAdaboost(trainOurSVM, trainData, trainLabels);
 1-sum(predicted~=testLabels)/size(testLabels, 1)
