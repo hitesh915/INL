@@ -35,7 +35,7 @@ function [model] = train_svm(labels, data, C, sigma)
 %            alpha<=C
 %            sum(alpha.*labels)==0
 %     cvx_end
-
+    cvx_quiet(true)
     cvx_begin
         variable alpha(n)
         maximize(alpha'*ones(n,1)-0.5*alpha'*(diag(labels)*kernel*diag(labels))*alpha)

@@ -5,12 +5,12 @@ rng(42);
 data = data(shufflePart, :);
 labels = labels(shufflePart, :);
 
-trainData = data(1:120,:);
-trainLabels = labels(1:120,:);
+trainData = data(1:380,:);
+trainLabels = labels(1:380,:);
 
-testData = data(121:end,:);
-testLabels = labels(121:end,:);
-trainOurSVM = train_svm(trainLabels, trainData, 2,2);
+testData = data(381:end,:);
+testLabels = labels(381:end,:);
+trainOurSVM = train_svm(trainLabels, trainData, 0.1,100);
 [hAxis,hLines] = svmplotdata(trainData,trainLabels,trainOurSVM);
 
 predicted = test_svm(trainOurSVM, testData);
