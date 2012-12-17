@@ -8,34 +8,34 @@ function [model] = train_adaboost(labels, data, T)
     data = standarizer(data);
 
     % Function to train a perceptron classifier
-    function [weights] = weak_learn(individuals, lbls, rates)
+    function [weights offset] = weak_learn(individuals, lbls, rates)
         [nindividuals nnodes] = size(individuals);
         
         weights = zeros(nnodes, 1);
+        offset = 0;
         
         for it = 1:200
             for ind = 1:nindividuals
                 individual = individuals(ind,:)';
-                out = sign(sum(individual .* weights));
-                weights = weights + rates(ind) * (lbls(ind) - out) * individual;
-                if sum(isnan(weights)) > 1
-                    break;
+                out = sign(sum(individual .* weights) + offset);
+                %weights = weights + rates(ind) * (lbls(ind) - out) * individual;
+                if lbls(ind) ~= out
+                    weights = weights + rates(ind) * lbls(ind) * individual;
+                    offset = offset + rates(ind) * lbls(ind);
                 end
             end
         end
     end
 
     % Function to test the perceptron classifier
-    function [labels] = weak_classifier(individuals, weights)
+    function [labels] = weak_classifier(individuals, weights, offset)
         nindividuals = size(individuals,1);
         
         labels = zeros(nindividuals,1);
         for ind = 1:nindividuals
-            labels(ind) = sign(sum(individuals(ind,:)' .* weights));
+            labels(ind) = sign(sum(individuals(ind,:)' .* weights) + offset);
         end
     end
-
-    % Function to test perceptron classifier
 
     % Get size of training data
     m = size(data, 1);
@@ -43,35 +43,74 @@ function [model] = train_adaboost(labels, data, T)
     % Initialize perceptrons matrix
     models = zeros(T,size(data,2));
     alphas = zeros(T,1);
+    offsets = zeros(T,1);
     
     % Initialize vector of weights
     D = zeros(m,1);
     D(:) = 1/m;
     
+    t = T;
     for i=1:T
+        results = nan;
+        weights = nan;
+        offset = nan;
         
-        % Train perceptron classifier
-        weights = weak_learn(data, labels, D);
-        results = weak_classifier(data, weights);
+        epsilon_t = inf;
+        for sm = 1:20
+            % Sample dataset according to weights distribution
+            n = m/1.5;
+            indices = zeros(n,1);
+            random_number = rand(1,n);
+            for k =1:n
+                location = find(random_number(k) <= cumsum(D), 1);
+                if isempty(location)
+                    indices(k)=1;
+                else
+                    indices(k)=location;
+                end
+            end
+            sdata = data(indices,:);
+            slabels = labels(indices,:);
+            
+            % Train perceptron classifier
+            [tweights, toffset] = weak_learn(sdata, slabels, D);
+            tresults = weak_classifier(data, tweights, toffset);
+
+            % Calculate epsilon
+            tepsilon_t = sum(D .* (tresults ~= labels));
+            %tepsilon_t = 1/m * sum(tresults ~= labels);
+            
+            if tepsilon_t < epsilon_t
+                epsilon_t = tepsilon_t;
+                weights = tweights;
+                offset = toffset;
+                results = tresults;
+            end
+        end
         
-        % Calculate epsilon
-        epsilon_t = sum(D .* (results ~= labels));
+        % If epsilon >= 1/2, stop algorithm
+        if epsilon_t >= 0.5
+            t = i;
+            break
+        end
         
-        % Choose alpha-t
-        alpha_t = 1/m * log((1-epsilon_t) / epsilon_t);
+        % Choose alpha-t (confidence value)
+        %alpha_t = 1/2 * log((1-epsilon_t) / epsilon_t);
+        alpha_t = -log(epsilon_t / (1 - epsilon_t));
 
         % Update vector of weights
-        for j=1:m
-            D = D .* exp(-alpha_t * (labels .* results));
-            D = D / sum(D);
-        end
+        correct = find(labels == results);
+        D(correct) = D(correct) * epsilon_t / (1 - epsilon_t);
+        %D = D .* exp(-alpha_t * (labels .* results));
+        D = D / sum(D);
         
         % Save model of this iteration
         models(i,:) = weights;
         alphas(i) = alpha_t;
+        offsets(i) = offset;
     end
     
     % Prepare response model
-    model = struct('T', T, 'models', models, 'alphas', alphas, 'meanTrain', mean, 'stdTrain', std);
+    model = struct('T', t, 'models', models, 'alphas', alphas, 'meanTrain', mean, 'stdTrain', std, 'offsets', offsets);
 end
 
