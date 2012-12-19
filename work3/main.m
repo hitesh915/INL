@@ -1,17 +1,14 @@
-<<<<<<< HEAD
-% dataset = 'breast-w';
-% 
-% data = [];
-%  for fold = 1:10
-%     [train, test] = parser_nfold(dataset, fold);
-%     data = [data;{train,test}];
-%  end
-%  
+dataset = 'heart-statlog';
+
+data = [];
+ for fold = 1:10
+    [train, test] = parser_nfold(dataset, fold);
+    data = [data;{train,test}];
+ end
+ 
 parametersRBF = cell(64, 2);
 parametersLinear = cell(8,1);
-=======
-dataset = 'breast-w';
->>>>>>> Reprogrammed the adaboost algorithm with thresholds
+
 
 cvPartitions = crossValPartition((1:size(data,1))',10,42);
 
@@ -32,21 +29,17 @@ bestPIndex = 1;
 while p < 64
     accuracies = zeros(10,1);
     for k = 1:10
-%         train = data{k,1};
-%         test = data{k,2};
-% 
-%         trainData = train(:,1:end-1);
-%         trainLabels = train(:,end);
-%         trainLabels(trainLabels == 2) = -1;
-% 
-%         testData = test(:,1:end-1);
-%         testLabels = test(:,end);
-%         testLabels(testLabels == 2) = -1;
-        trainData = data(k~=cvPartitions);
-        trainLabels = labels(k~=cvPartitions);
+        train = data{k,1};
+        test = data{k,2};
 
-        testData = data(k~=cvPartitions);
-        testLabels = labels(k~=cvPartitions);
+        trainData = train(:,1:end-1);
+        trainLabels = train(:,end);
+        trainLabels(trainLabels == 2) = -1;
+
+        testData = test(:,1:end-1);
+        testLabels = test(:,end);
+        testLabels(testLabels == 2) = -1;
+
 
         svmTrain = train_svm(trainLabels,trainData,parametersRBF{p}{1},parametersRBF{p}{2});
         predicted = test_svm(svmTrain,testData);
@@ -55,7 +48,7 @@ while p < 64
     
     fprintf('sigma:\t%f, C:\t%f, Accuracy:\t%f\n',parametersRBF{p}{2}, parametersRBF{p}{1}, mean(accuracies));
     
-    if bestAccuracy < mean(accuracies)
+    if bestAccuracy <= mean(accuracies)
         bestAccuracy = mean(accuracies);
         bestStd = std(accuracies);
         bestP{1}{1} = parametersRBF{p}{1};

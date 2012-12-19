@@ -1,4 +1,13 @@
-function [labels] = test_adaboost(data,model)
+function [labels] = test_adaboost(data,models)
+    function y = classify_data(h, x)
+        if(h.direction == 1)
+            y =  double(x(:,h.dimension) >= h.threshold);
+        else
+            y =  double(x(:,h.dimension) < h.threshold);
+        end
+        y(y == 0) = -1;
+    end
+
     % Retrieve weak models
     models = model.models;
     
@@ -10,7 +19,7 @@ function [labels] = test_adaboost(data,model)
     % Add results of the single weak classifiers weighted by their alpha 
     labels=zeros(size(data,1),1);
     for t=1:length(model);
-        labels = labels + models(t).alpha * feval(model.weakTester, data,models(t).w);
+        labels = labels + models(t).alpha * classify_data(models(t), data);
     end
     
     % If sum of weak classifiers < 0, class = -1, +1 otherwise

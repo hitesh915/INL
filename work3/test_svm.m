@@ -1,4 +1,4 @@
-function [ predicted, f ] = test_svm( svmStruct, test )
+function [ predicted, f ] = test_svm( test, svmStruct )
 %TEST_SVM Summary of this function goes here
 %   Detailed explanation goes here
 
