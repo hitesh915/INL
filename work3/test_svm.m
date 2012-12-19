@@ -2,28 +2,25 @@ function [ predicted, f ] = test_svm( test, svmStruct )
 %TEST_SVM Summary of this function goes here
 %   Detailed explanation goes here
 
+    % Get hyperplane parameters
     w = svmStruct.w;
     b = svmStruct.b;
     
     % Standarize test data
-    test = bsxfun(@minus, test, svmStruct.meanTrain);
-    test = bsxfun(@rdivide, test, svmStruct.stdTrain);
-    test(isnan(test)) = 0;
+    test = standarizer(test, svmStruct.meanTrain, svmStruct.stdTrain);
     
     % Initialize f vector
     f = zeros(size(test,1),1);
     
-%     w = [0, 0];
-%     for i = 1:size(svmStruct.w,1)
-%         w = w + svmStruct.sv_alphas(i)*svmStruct.sv_labels(i)*svmStruct.sv_points(i,:);
-%     end
-    
+    % Classify using the linear kernel
     if strcmp(svmStruct.kernel,'linear')
         f = zeros(size(test,1),1);
         for i = 1:size(test,1)
-            f(i) = svmStruct.w'*test(i,:)'+b;
+            f(i) = w'*test(i,:)' + b;
         end
         predicted = sign(f);
+        
+    % Classify using the RBF kernel
     else
         kernels = rbfKernel(svmStruct.sv_points,test, svmStruct.sigma);
 
