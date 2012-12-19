@@ -82,7 +82,6 @@ function [model] = train_svm(labels, data, C, sigma)
     model.stdTrain = std;
     if nargin >= 4
         model.kernel = 'rbf';
-        model.sv_alphas = sv_alphas;
         model.sigma = sigma;
     end
 end

@@ -84,6 +84,7 @@ function [ eout ] = crossValidate( dataset )
             c = parametersLinear(ic);
             fprintf('  SVM (c = %.4f) error: %.4f\n', c, errs(ic));
         end
+        fprintf('\n');
     end
 
     function [model, errs] = optimizeRbfSVM(folds)
@@ -113,6 +114,7 @@ function [ eout ] = crossValidate( dataset )
                 errs(ico) = errs(ico) + sum(test.labels ~= tlabels) / size(tlabels,1);
             end
         end
+        fprintf('\n');
         
         % Get final errors
         errs = errs / nfolds;
@@ -127,6 +129,7 @@ function [ eout ] = crossValidate( dataset )
             o = parametersRBF(ico,2);
             fprintf('  RBF (c = %.4f, o = %.6f) error: %.4f\n', c, o, errs(ico));
         end
+        fprintf('\n');
     end
 
     function [model, errs] = optimizeAdaboost(folds)
@@ -160,6 +163,7 @@ function [ eout ] = crossValidate( dataset )
             t = parametersAdaboost(iv);
             fprintf('  ADA (t = %.4f) error: %.4f\n', t, errs(iv));
         end
+        fprintf('\n');
     end
 
     % ----------------------------------------------------------------
@@ -210,21 +214,40 @@ function [ eout ] = crossValidate( dataset )
         eout_ada(i) = eout_ada(i) + sum(testData.labels ~= ilabels) / size(ilabels,1);
     end
     
-    % Calculate mean eout errors
-    meout_svm = sum(eout_svm) / size(eut_svm,1);
-    meout_rbf = sum(eout_rbf) / size(eut_rbf,1);
-    meout_ada = sum(eout_ada) / size(eut_ada,1);
+    % Calculate mean of sample errors
+    meout_svm = mean(eout_svm);
+    meout_rbf = mean(eout_rbf);
+    meout_ada = mean(eout_ada);
+    
+    % Calculate std of sample errors
+    seout_svm = std(eout_svm);
+    seout_rbf = std(eout_rbf);
+    seout_ada = std(eout_ada);
+    
+    % Print mean eout errors
+    fprintf('SVM out of sample error: %.4f', meout_svm);
+    fprintf('RBF out of sample error: %.4f', meout_rbf);
+    fprintf('ADA out of sample error: %.4f', meout_ada);
     
     % Prepare eout return structure
     eout = struct;
     eout.svm = struct;
     eout.svm.mean = meout_svm;
+    eout.svm.std = seout_svm;
+    eout.svm.sem = meout_svm / sqrt(size(data,1));
+    eout.svm.ci = eout.svm.sem * 2.262;
     eout.svm.surface = errs_svm;
     eout.rbf = struct;
     eout.rbf.mean = meout_rbf;
+    eout.rbf.std = seout_rbf;
+    eout.rbf.sem = meout_rbf / sqrt(size(data,1));
+    eout.rbf.ci = eout.rbf.sem * 2.262;
     eout.rbf.surface = errs_rbf;
     eout.ada = struct;
     eout.ada.mean = meout_ada;
+    eout.ada.std = seout_ada;
+    eout.ada.sem = meout_ada / sqrt(size(data,1));
+    eout.ada.ci = eout.ada.sem * 2.262;
     eout.ada.surface = errs_ada;
 end
 

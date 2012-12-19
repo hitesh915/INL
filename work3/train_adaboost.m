@@ -6,18 +6,18 @@ function [model] = train_adaboost(labels, data, T, weakClassifier)
     %Assign a function handler that acts as a weak classifier
     if nargin < 4
         weakClassifier = 'svm';
-    else
-        switch weakClassifier
-            case 'svm'
-                weakC = @train_svm;
-                weakTester =  @test_svm;
-            case 'perceptron'
-                weakC = @train_Perceptron;
-                weakTester =  @test_Perceptron;
-            case 'sigmoidalPerceptron'
-                weakC = @train_PerceptronSigmoid;
-                weakTester =  @test_PerceptronSigmoid;
-        end
+    end
+    
+    switch weakClassifier
+        case 'svm'
+            weakC = @train_svm;
+            weakTester =  @test_svm;
+        case 'perceptron'
+            weakC = @train_Perceptron;
+            weakTester =  @test_Perceptron;
+        case 'sigmoidalPerceptron'
+            weakC = @train_PerceptronSigmoid;
+            weakTester =  @test_PerceptronSigmoid;
     end
     
     %Obtain the data relevant to the adaboost t evaluation: labels
