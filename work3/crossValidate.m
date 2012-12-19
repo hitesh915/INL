@@ -173,9 +173,9 @@ function [ eout ] = crossValidate( dataset )
     % Parse data folds
     data = parseFolds(dataset);
 
-    eout_svm = zeros(size(data,1));
-    eout_rbf = zeros(size(data,1));
-    eout_ada = zeros(size(data,1));
+    eout_svm = zeros(size(data,1),1);
+    eout_rbf = zeros(size(data,1),1);
+    eout_ada = zeros(size(data,1),1);
     
     errs_svm = zeros(8,  1);
     errs_rbf = zeros(64, 1);
@@ -225,9 +225,9 @@ function [ eout ] = crossValidate( dataset )
     seout_ada = std(eout_ada);
     
     % Print mean eout errors
-    fprintf('SVM out of sample error: %.4f', meout_svm);
-    fprintf('RBF out of sample error: %.4f', meout_rbf);
-    fprintf('ADA out of sample error: %.4f', meout_ada);
+    fprintf('SVM out of sample error: %.4f\n', meout_svm);
+    fprintf('RBF out of sample error: %.4f\n', meout_rbf);
+    fprintf('ADA out of sample error: %.4f\n', meout_ada);
     
     % Prepare eout return structure
     eout = struct;
