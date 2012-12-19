@@ -1,4 +1,4 @@
-function [ matrixZ, meanC, stdDevC ] = standarizer( matrix )
+function [ matrixZ, meanC, stdDevC ] = standarizer( matrix, mean, stdDev )
     %STANDARIZERS Returns a standarized version of the data with the missing
     %  values substituted with the mean of the attribute
     %
@@ -11,8 +11,13 @@ function [ matrixZ, meanC, stdDevC ] = standarizer( matrix )
     %    stdDevC = Vector with the standard deviation of each column
 
     %Compute the mean & standard deviation of each column (NaNs no compute)
-    meanC = nanmean(matrix);
-    stdDevC = nanstd(matrix);
+    if nargin >= 3
+        meanC = mean;
+        stdDevC = stdDev;
+    else
+        meanC = nanmean(matrix);
+        stdDevC = nanstd(matrix);
+    end
     
     %Logical matrix with ones in the place of NaNs and 0 the rest
     matrixNaNs = isnan(matrix);
