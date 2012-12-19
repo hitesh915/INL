@@ -46,7 +46,7 @@ function [ eout ] = crossValidate( dataset )
 
     for p = -4:3
         parametersLinear(p+5, 1) = 2^p;
-        parametersAdaboost(p+5, 1) = 1+5*(p+4);
+        parametersAdaboost(p+5, 1) = 3*(p+5);
         for pp = -4:3
             parametersRBF(1+8*(p+4)+(pp+4), 1) = 2^p;
             parametersRBF(1+8*(p+4)+(pp+4), 2) = 2^pp;
@@ -67,7 +67,7 @@ function [ eout ] = crossValidate( dataset )
                 c = parametersLinear(ic);
                 
                 models{ic} = train_svm(train.labels, train.data, c);
-                tlabels = test_svm(models{ic}, test.data);
+                tlabels = test_svm(test.data, models{ic});
                 errs(ic) = errs(ic) + sum(test.labels ~= tlabels) / size(tlabels,1);
             end
         end
@@ -109,7 +109,7 @@ function [ eout ] = crossValidate( dataset )
                 psize = numel(msg);
                 
                 models{ico} = train_svm(train.labels, train.data, c, o);
-                tlabels = test_svm(models{ico}, test.data);
+                tlabels = test_svm(test.data, models{ico});
                 errs(ico) = errs(ico) + sum(test.labels ~= tlabels) / size(tlabels,1);
             end
         end
@@ -143,7 +143,7 @@ function [ eout ] = crossValidate( dataset )
                 t = parametersAdaboost(iv);
                 
                 models{iv} = train_adaboost(train.labels, train.data, t);
-                tlabels = test_adaboost(models{iv}, test.data);
+                tlabels = test_adaboost(test.data, models{iv});
                 errs(iv) = errs(iv) + sum(test.labels ~= tlabels) / size(tlabels,1);
             end
         end
@@ -196,17 +196,17 @@ function [ eout ] = crossValidate( dataset )
         
         % SVM: Calculate out of sample error
         svm_model = train_svm(trainData.labels, trainData.data, svm_model.c);
-        ilabels = test_svm(svm_model, testData.data);
+        ilabels = test_svm(testData.data, svm_model);
         eout_svm(i) = eout_svm(i) + sum(testData.labels ~= ilabels) / size(ilabels,1);
         
         % RBF: Calculate out of sample error
         rbf_model = train_svm(trainData.labels, trainData.data, rbf_model.c, rbf_model.sigma);
-        ilabels = test_svm(rbf_model, testData.data);
+        ilabels = test_svm(testData.data, rbf_model);
         eout_rbf(i) = eout_rbf(i) + sum(testData.labels ~= ilabels) / size(ilabels,1);
     
         % ADA: Calculate out of sample error
         ada_model = train_adaboost(trainData.labels, trainData.data, ada_model.t);
-        ilabels = test_adaboost(ada_model, testData.data);
+        ilabels = test_adaboost(testData.data, ada_model);
         eout_ada(i) = eout_ada(i) + sum(testData.labels ~= ilabels) / size(ilabels,1);
     end
     
