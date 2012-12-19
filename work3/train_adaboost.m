@@ -51,12 +51,14 @@ function [model] = train_adaboost(labels, data, T, weakClassifier)
     D = zeros(m,1);
     D(:) = 1/m;
     
+    t = T;
     for ii=1:T
         % Train new classifier
         [results, error, w] = train_weak_classifier(data, labels, D);
         
         % If error >= 1/2, stop algorithm
         if error >= 0.5
+            t = ii - 1;
             break
         end
         
@@ -75,7 +77,7 @@ function [model] = train_adaboost(labels, data, T, weakClassifier)
     % Prepare response model
     model = struct;
     model.models = models;
-    model.t = T;
+    model.t = t;
     model.meanTrain = mean;
     model.stdTrain = std;
     model.weakTester = weakTester;
