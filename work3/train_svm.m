@@ -74,7 +74,7 @@ function [model] = train_svm(labels, data, C, sigma)
 %     model_b = labels(maxPos) - sum((sv_alphas.*sv_labels).*kernel(svii,maxPos));
     
     % Create model structure
-    model = struct('kernel', 'linear', 'w', model_w, 'b', model_b);
+    model = struct('kernel', 'linear', 'w', model_w, 'b', model_b, 'c', C);
     model.sv_points = sv_points;
     model.meanTrain = mean;
     model.sv_alphas = sv_alphas;
