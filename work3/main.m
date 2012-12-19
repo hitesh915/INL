@@ -1,4 +1,4 @@
-dataset1 = 'breast-w';
+dataset1 = 'heart-statlog';
 results1 = crossValidate(dataset);
 
 % Save to file

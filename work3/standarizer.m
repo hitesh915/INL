@@ -11,26 +11,19 @@ function [ matrixZ, meanC, stdDevC ] = standarizer( matrix, mean, stdDev )
     %    stdDevC = Vector with the standard deviation of each column
 
     %Compute the mean & standard deviation of each column (NaNs no compute)
-    if nargin >= 3
-        meanC = mean;
-        stdDevC = stdDev;
-    else
+    if nargin < 3
         meanC = nanmean(matrix);
         stdDevC = nanstd(matrix);
+    else
+        meanC = mean;
+        stdDevC = stdDev;
     end
     
     %Logical matrix with ones in the place of NaNs and 0 the rest
-    matrixNaNs = isnan(matrix);
     
-    %Inter. matrix, with the mean in the place of NaNs
-    matrixIntermediate = matrixNaNs * diag(meanC);
-    
-    %Join inter. matrix with original matrix. Substitude missing
-    %values(NaNs) for the mean of the attribute
-    matrix(matrixNaNs) = matrixIntermediate(matrixNaNs);
-   
-    %Get a standarized matrix
-    matrixZ = zscore(matrix);
+    matrixZ = bsxfun(@minus, matrix, meanC);
+    matrixZ = bsxfun(@rdivide, matrixZ, stdDevC);
+    matrixZ(isnan(matrixZ)) = 0;
 
 end
 
