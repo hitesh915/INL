@@ -76,8 +76,8 @@ function [model] = train_adaboost(labels, data, T, weakClassifier)
     model = struct;
     model.models = models;
     model.t = T;
-    model.mean = mean;
-    model.std = std;
+    model.meanTrain = mean;
+    model.stdTrain = std;
     model.weakTester = weakTester;
 end
 

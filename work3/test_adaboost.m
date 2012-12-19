@@ -3,9 +3,7 @@ function [labels] = test_adaboost(data,model)
     models = model.models;
     
     % Standardize test data
-    data = bsxfun(@minus, data, model.mean);
-    data = bsxfun(@rdivide, data, model.std);
-    data(isnan(data)) = 0;
+    data = standarizer(data, model.meanTrain, model.stdTrain);
     
     % Add results of the single weak classifiers weighted by their alpha 
     labels=zeros(size(data,1),1);
