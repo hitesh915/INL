@@ -1,4 +1,4 @@
-dataset1 = 'ionosphere';
+dataset1 = 'heart-statlog';
 results1 = crossValidate(dataset1);
 
 % Save to file

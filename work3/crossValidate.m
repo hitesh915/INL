@@ -201,17 +201,17 @@ function [ eout ] = crossValidate( dataset )
         % SVM: Calculate out of sample error
         svm_model = train_svm(trainData.labels, trainData.data, svm_model.c);
         ilabels = test_svm(testData.data, svm_model);
-        eout_svm(i) = eout_svm(i) + sum(testData.labels ~= ilabels) / size(ilabels,1);
+        eout_svm(i) = sum(testData.labels ~= ilabels) / size(ilabels,1);
         
         % RBF: Calculate out of sample error
         rbf_model = train_svm(trainData.labels, trainData.data, rbf_model.c, rbf_model.sigma);
         ilabels = test_svm(testData.data, rbf_model);
-        eout_rbf(i) = eout_rbf(i) + sum(testData.labels ~= ilabels) / size(ilabels,1);
+        eout_rbf(i) = sum(testData.labels ~= ilabels) / size(ilabels,1);
     
         % ADA: Calculate out of sample error
         ada_model = train_adaboost(trainData.labels, trainData.data, ada_model.t);
         ilabels = test_adaboost(testData.data, ada_model);
-        eout_ada(i) = eout_ada(i) + sum(testData.labels ~= ilabels) / size(ilabels,1);
+        eout_ada(i) = sum(testData.labels ~= ilabels) / size(ilabels,1);
     end
     
     % Calculate mean of sample errors
