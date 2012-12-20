@@ -1,0 +1,209 @@
+%
+%  untitled
+%
+%  Created by Joan T. Matamalas Llodrà on 2011-04-19.
+%  Copyright (c) 2012. All rights reserved.
+%
+\documentclass[10pt, journal]{IEEEtran}
+
+% Use utf-8 encoding for foreign characters
+\usepackage[utf8]{inputenc}
+
+% Setup for fullpage use
+\usepackage{fullpage}
+
+% Uncomment some of the following if you use the features
+%
+% Running Headers and footers
+%\usepackage{fancyhdr}
+
+% Multipart figures
+\usepackage{subfigure}
+
+% More symbols
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{latexsym}
+
+% Surround parts of graphics with box
+\usepackage{boxedminipage}
+
+% Multirow tables
+\usepackage{multirow} 
+
+% Package for including code in the document
+\usepackage{listings}
+
+% If you want to generate a toc for each chapter (use with book)
+%\usepackage{minitoc}
+
+% This is now the recommended way for checking for PDFLaTeX:
+\usepackage{ifpdf}
+
+%\newif\ifpdf
+%\ifx\pdfoutput\undefined
+%\pdffalse % we are not running PDFLaTeX
+%\else
+%\pdfoutput=1 % we are running PDFLaTeX
+%\pdftrue
+%\fi
+
+\ifpdf
+\usepackage[pdftex]{graphicx}
+\else
+\usepackage{graphicx}
+\fi
+\title{Supervised classification exercise\\Introduction to Machine Learning}
+\author{Marc Oliu \& Joan T. Matamalas}
+
+\date{\today}
+
+\begin{document}
+
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg, .png}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+\maketitle
+
+\begin{abstract}
+Nulla vitae elit libero, a pharetra augue. Donec id elit non mi porta gravida at eget metus. Etiam porta sem malesuada magna mollis euismod. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nulla vitae elit libero, a pharetra augue. Nullam id dolor id nibh ultricies vehicula ut id elit.
+\end{abstract}
+
+\section{Introduction} % (fold)
+\label{sec:introduction}
+The problem of classifying a set of images with two possible classes by means of a binary classifier is a long studied problem which has many techniques for its resolution. The goal of this paper is to analyze the performance of three commonly used techniques for two distinct data sets with a varying number of features and different data distribution. More precisely, the algorithms will be run for a linearly separable dataset with 13 features, and for a non-linearly separable dataset with 34 features.\\
+
+The three algorithms to be analyzed are the linear Support Vector Machine (SVM), a kernelized version of the Support Vector Machine using the Radial Basis Function kernel (RBF-SVM), and the Adaboost meta-classifier.\\
+
+The SVM algorithm is a linear classifier which defines a delimiting vector to separate the two classes of the data. For this implementation, a soft-margin version of the classifier which allows for data with overlapping classes is used in order to prevent the algorithm from destabilizing in non-linearly separable data. The RBF-SVM algorithm is a kernelized version of the SVM which transforms the data to be classified by projecting the points into a new dimension by means of a radial basis function, which allows for a better separability of the data.\\
+
+Finally, the Adaboost meta-classifier is used in conjunction with the linear SVM. The Adaboost (or adaptive boosting) is an algorithm consisting on the generation of a set of weighted weak models which then classify the data by means of a weighted voting of the results of the model. Multiple weak algorithms were considered for the meta-classifier, but finally SVM was chosen for being the one with the lowest out of sample error.
+% section introduction (end)
+
+\section{Specification of the problem} % (fold)
+\label{sec:specification_of_the_problem}
+The general algorithm of the problem consists on a 10-fold cross-validation of the test data sets to calculate the out of sample error for the used algorithms, and for each fold a 3-fold cross-validation is performed over the train data to select the parameters of the models. Three folds are used instead of 10 because of the computational cost of the system, but a 10-fold cross-validation would be preferred to increase the accuracy of the estimation of the out of sample error for the given parameters.\\
+
+In this section the specification of each algorithm will be explained, as well as the general algorithm used for the obtention and analysis of the out of sample error.
+
+\subsection{The Linear Support Vector Machine (SVM) algorithm} % (fold)
+\label{sub:the_linear_support_vector_machine_svm_algorithm}
+The SVM algorithm consists on the optimization of a hyperplane which is then used for the classification of the data. The two parameters which describe the hyperplane are its director vector, represented by W, and the offset of the hyperplane, represented by `b'.\\
+
+The hyperplane resulting from the training of the model is then used as a separator between the two classes, where all elements which fall above the hyperplane belong to one of the classes, and the ones falling below belong to the other. These two classes are represented by a +1 and a -1 value correspondingly, which simplifies the training and classification tasks.\\
+
+The equation \ref{eq:svm_maximize} represents the maximization function used to select the alpha values for the different support vectors in the dual form of the SVM with soft margin. The alpha values represent the weight of each support vector, and has a value between 0 and C, being C the parameter to optimize. A higher value for alpha means that a miss-classification of the related support vector is more heavily penalized, so increasing the value of C increases the maximum weight of each support vector.\\
+\begin{equation}
+	\begin{aligned}
+		& \underset{\alpha_i}{\text{max}}
+		& & L(\alpha) = \sum_{i=1}^{n}{\alpha_i} - \frac{1}{2}\sum_{i,j}\alpha_i\alpha_j y_i y_j k(x_i,x_j)\\
+		& \text{s.t.}
+		& & 0 \le \alpha_i \le C \land \sum_{i=1}^n{\alpha_i y_i} = 0
+	\end{aligned}
+	\label{eq:svm_maximize}
+\end{equation}
+
+Once the alpha values are optimized, the values for the director vector W of the hyperplane and its offset `b' are calculated out of the support vectors, considering as support vectors only those elements with a value above 0 for alpha, as it can be seen on the equations at figure \ref{eq:svm_wb}.\\
+\begin{equation}
+	\begin{aligned}
+		&w = \sum_i{\alpha_iy_ix_i} = 0\\
+		&b = \frac{1}{\#SV}\sum_{i \in SV}{y_i-(\sum_{m \in SV}{\alpha_my_mx_m\cdot x_i})}
+	\end{aligned}
+	\label{eq:svm_wb}
+\end{equation}
+
+Once the training of the model is completed, the classification of one element can be performed by using only the W and `b' parameters, which represent the model. To do so, the equation of figure \ref{eq:svm_classify} is used. What this equation does is to calculate the position of a data point with respect to the hyperplane and get the sign of the result. If the element is above the hyperplane, it belongs to the +1 class, and if below, to the -1 class.
+\begin{equation}
+	sign(\mathbf{w}\cdot x + b)
+	\label{eq:svm_classify}
+\end{equation}
+
+\subsection{The Radial Basis Function kernelized SVM (RBF-SVM) algorithm} % (fold)
+\label{sub:the_radial_basis_function_kernelized_svm_rbf_svm_algorithm}
+
+The RBF-SVM algorithm is a variation of the SVM algorithm which uses a non-linear kernel different from the dot product of data points. In particular, the kernel used in this algorithm for the kernelized SVM is the radial basis function, which is calculated by using the function represented at figure \ref{eq:rbf_kernel}. As it can be seen in the function, there is an sigma parameter, which thefines the width of the gaussian distribution over the new dimension. As the sigma value increases, the gaussian form is wider, while it gets sharper as sigma decreases.\\
+\begin{equation}
+	k_{rbf}(x_1,x_2) = e^\frac{||x_1-x_2||^2}{2\sigma^2}
+	\label{eq:rbf_kernel}
+\end{equation}
+The kernel functions allow for the calculation of the dot-product between two points in a higher dimensional space without the need of first increasing the dimensionality of the data points, simplifying the process of optimizing the function, since the same optimization function seen in the previous section (figure \ref{eq:svm_maximize}) is valid, needing only to replace the dot product by the kernel function.\\
+
+Since the dot product is performed on the lower-dimensional data, and the dataset isn't transformed to the higher-dimensional space, it's not possible to calculate the hyperplane director vector from the support vector, and thus the support vectors, their alphas and labels must be added to the model in order to classify other data points. The `b' value, which represents the offset of the hyperplane, is calculated in the same way as with the linear SV, as seen in the second function of figure \ref{eq:svm_wb}.\\
+
+To classify the new instances, the equation seen at figure \ref{eq:rbf_classify} is used. This equation first calculates the position of the data point with respect to the hyperplane without taking into account the offset by using directly the support vector, and then adds the offset to the result. This is the same procedure used in the normal SVM, but since now the equation of the hyperplane isn’t defined, the support vectors that define this hyperplane are used directly to check the position of the new data point with respect to the hyperplane.\\
+
+\begin{equation}
+	sign(\sum_{i+1}{\alpha_{i}y_i k(x_i,x)})
+	\label{eq:rbf_classify}
+\end{equation}
+
+As with the SVM models, the sign of the result defines the class of the data point.
+
+% subsection the_radial_basis_function_kernelized_svm_rbf_svm_algorithm (end)
+
+
+
+
+
+\begin{equation}
+	H(x) = sign(\sum_{t=1}^{T}{\alpha_t h_t(x)})
+	\label{eq:ada_classify}
+\end{equation}
+
+\begin{equation}
+	\begin{aligned}
+	&D_{t+1}(i) = \frac{D_t(i)e^{-\alpha_ty_th_t(x_i)}}{Z_t}\\
+	&Z_t = \sum_{i}{D_t(i)e^{\alpha_ty_th_t(x_i)}}
+	\end{aligned}
+	\label{ada_updweights}
+\end{equation}
+
+\begin{equation}
+	\alpha_t = \frac{1}{2}log\frac{1-\epsilon}{\epsilon}
+	\label{ada_alpha}
+\end{equation}
+% subsection the_linear_support_vector_machine_svm_algorithm (end)
+
+% section specification_of_the_problem (end)
+
+\section{Organization of the software} % (fold)
+\label{sec:organization_of_the_software}
+
+% section organization_of_the_software (end)
+
+
+\section{Experiments} % (fold)
+\label{sec:experiments}
+
+\subsection{Experimental methodology} % (fold)
+\label{sub:experimental_methodology}
+
+% subsection experimental_methodology (end)
+
+\subsection{Ionosphere dataset} % (fold)
+\label{sub:ionosphere_dataset}
+
+% subsection ionosphere_dataset (end)
+
+\subsection{Heart-statlog dataset} % (fold)
+\label{sub:heart_statlog_dataset}
+
+% subsection heart_statlog_dataset (end)
+% section experiments (end)
+
+\section{Conclusions} % (fold)
+\label{sec:conclusions}
+
+% section conclusions (end)
+
+\section{Future Work} % (fold)
+\label{sec:future_work}
+
+% section future_work (end)
+
+\bibliographystyle{plain}
+\bibliography{}
+\end{document}

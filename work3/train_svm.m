@@ -1,10 +1,20 @@
 function [model] = train_svm(labels, data, C, sigma)
-%TRAIN_SVM Summary of this function goes here
-%   Detailed explanation goes here
+%TRAIN_SVM train a SVM with the given data
+%   INPUT:
+%       - labels: the labels of each instance of the training set.
+%       - data: the dataset used to train the SVM
+%       - C: The soft marging parameter
+%       - sigma: the sigma value used in the gausian RBF funtion. If this
+%       value is not fixed the algorithm will apply a linear Kernel.
+%   OUTPUT:
+%       - model: an structure of the model that contais all the parameters
+%       needed to perform the classification. See below.
 
+    %Calc the mean and the standard deviation of the data
     mean = nanmean(data);
     std = nanstd(data);
 
+    %Standarize the data
     data = standarizer(data);
     
     % If C is undefined, set C to 2
@@ -27,14 +37,6 @@ function [model] = train_svm(labels, data, C, sigma)
     
     %Dual form (using quadratic programming via CVX)
     cvx_clear
-%     cvx_begin
-%         variable alpha(n)
-%         maximize(sum(alpha) -  0.5*quad_form(labels.*alpha,kernel))
-%         subject to
-%            alpha>=0
-%            alpha<=C
-%            sum(alpha.*labels)==0
-%     cvx_end
     cvx_quiet(true)
     cvx_begin
         variable alpha(n)
@@ -43,13 +45,9 @@ function [model] = train_svm(labels, data, C, sigma)
            0<= alpha <=C
            sum(alpha.*labels)==0
     cvx_end
-
     
+    %Get the index of the support vectors
     svii = find( alpha > sqrt(eps));
-    
-    % Obtain model parameters
-    %model_b = (1/length(svii))*sum(labels(svii) - kernel(svii,:)*alpha.*labels(svii));
-    %model_w = data'*(alpha.*labels);
 
     % Obtain support vectors data
     sv_alphas = alpha(svii,:);
@@ -68,11 +66,7 @@ function [model] = train_svm(labels, data, C, sigma)
         end
     end
     model_b = model_b / size(sv_points,1);
-
-
-%     [~,maxPos] = max(alpha);
-%     model_b = labels(maxPos) - sum((sv_alphas.*sv_labels).*kernel(svii,maxPos));
-    
+ 
     % Create model structure
     model = struct('kernel', 'linear', 'w', model_w, 'b', model_b, 'c', C);
     model.sv_points = sv_points;

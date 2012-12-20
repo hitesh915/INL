@@ -1,9 +1,16 @@
 function [model] = train_adaboost(labels, data, T, weakClassifier)
 %TRAIN_ADABOOST train a adaboost algorithm
 %   INPUT:
-%       labe
+%       - labels: The labels of each instance of the training dataset
+%       - data: the data used to train the dataset
+%       - T: the maximum number of models to generate.
+%       - weakClassifier: the name of the weak classifier to be used.
+%       Default: linear-SVM.
+%   OUTPUT:
+%       - model: an structure of the model that contais all the parameters
+%       needed to perform the classification. See below.
     
-    %Assign a function handler that acts as a weak classifier
+    %Assign a function handler that acts as a weak classifier.
     if nargin < 4
         weakClassifier = 'svm';
     end

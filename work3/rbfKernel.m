@@ -1,6 +1,11 @@
 function [ result ] = rbfKernel( data1, data2, sigma )
-%RBFFUNCTION Summary of this function goes here
-%   Detailed explanation goes here
+%RBFFUNCTION This function implements the computation of gaussian RBF
+%kernel function.
+%   INPUT:
+%       -data1: dataset 1
+%       -data2: dataset 2
+%   OUTPUT:
+%       -result: the kernel function result of the two input datasets.
 
     result = zeros(size(data1,1), size(data2,1));
     for dI = 1:size(data1,1)

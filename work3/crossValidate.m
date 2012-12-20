@@ -1,6 +1,15 @@
 function [ eout ] = crossValidate( dataset )
-%CROSSVALIDATE Summary of this function goes here
-%   Detailed explanation goes here
+%CROSSVALIDATE Runs the core of the experiment. Selection of the models for
+%several algorithms, computation of the out of sample error...
+%   INPUT:
+%       - dataset: The name of the dataset used to test the experiment.
+%   OUTPUT:
+%       - eout: Result of the experiment, specifying the out of sample
+%       error, the mean of this error, the standard deviation, the standard
+%       error of mean an a confident interval with a significance of the
+%       .95 using a student's t distribution (and thus, assuming the
+%       'normality' of the output) of the three tested methods: Linear SVM,
+%       RBF SVM and ADABoost.
 
     % ----------------------------------------------------------------
     % -- Data management functions

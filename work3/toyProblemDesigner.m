@@ -1,3 +1,5 @@
+%Script used to manually generate a toy dataset to test the several
+%algoritms.
 
 figure;axis([-1 1 -1 1]);hold on;
 i=1;

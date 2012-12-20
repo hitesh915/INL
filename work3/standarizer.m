@@ -4,6 +4,8 @@ function [ matrixZ, meanC, stdDevC ] = standarizer( matrix, mean, stdDev )
     %
     %  INPUTS:
     %    matrix = Matrix with the data to standarize
+    %    mean(optional) = the mean used to standarize
+    %    stdDev(optional) = the standard deviation used to standarize
     %
     %  OUTPUTS:
     %    matrixZ = Original matrix standarized
