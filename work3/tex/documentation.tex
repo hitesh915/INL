@@ -117,9 +117,10 @@ Once the alpha values are optimized, the values for the director vector W of the
 
 Once the training of the model is completed, the classification of one element can be performed by using only the W and `b' parameters, which represent the model. To do so, the equation of figure \ref{eq:svm_classify} is used. What this equation does is to calculate the position of a data point with respect to the hyperplane and get the sign of the result. If the element is above the hyperplane, it belongs to the +1 class, and if below, to the -1 class.
 \begin{equation}
-	sign(\mathbf{w}\cdot x + b)
+	\mathbf{w}\cdot x + b
 	\label{eq:svm_classify}
 \end{equation}
+% subsection the_linear_support_vector_machine_svm_algorithm (end)
 
 \subsection{The Radial Basis Function kernelized SVM (RBF-SVM) algorithm} % (fold)
 \label{sub:the_radial_basis_function_kernelized_svm_rbf_svm_algorithm}
@@ -136,36 +137,52 @@ Since the dot product is performed on the lower-dimensional data, and the datase
 To classify the new instances, the equation seen at figure \ref{eq:rbf_classify} is used. This equation first calculates the position of the data point with respect to the hyperplane without taking into account the offset by using directly the support vector, and then adds the offset to the result. This is the same procedure used in the normal SVM, but since now the equation of the hyperplane isn’t defined, the support vectors that define this hyperplane are used directly to check the position of the new data point with respect to the hyperplane.\\
 
 \begin{equation}
-	sign(\sum_{i+1}{\alpha_{i}y_i k(x_i,x)})
+	\sum_{i+1}{\alpha_{i}y_i k(x_i,x)}
 	\label{eq:rbf_classify}
 \end{equation}
 
 As with the SVM models, the sign of the result defines the class of the data point.
-
 % subsection the_radial_basis_function_kernelized_svm_rbf_svm_algorithm (end)
 
-
-
-
-
+\subsection{The Adaboost Algorithm} % (fold)
+\label{sub:the_adaboost_algorithm}
+The adaboost algorithm is a meta-classifier that uses a linear combination of weak classifiers of the same type to classify a data point, as it can be seen in figure \ref{eq:ada_classify}. As it can be seen, each weak classifier as a weight assigned, which is inversely proportional to the classification error of the weak model.\\
 \begin{equation}
 	H(x) = sign(\sum_{t=1}^{T}{\alpha_t h_t(x)})
 	\label{eq:ada_classify}
 \end{equation}
+
+An weak classifier can be used with the adaboost algorithm, and some have been considered for this work. More specifically, the threshold, perceptron and linear SVM classifiers have been considered for being used with the adaboost algorithm. Finally the selected one has been the SVM algorithm, since it is the one with the highest predictive power, and because it’s a good option to check the improvement of the Adaboost algorithm over the normal SVM classifier.\\
 
 \begin{equation}
 	\begin{aligned}
 	&D_{t+1}(i) = \frac{D_t(i)e^{-\alpha_ty_th_t(x_i)}}{Z_t}\\
 	&Z_t = \sum_{i}{D_t(i)e^{\alpha_ty_th_t(x_i)}}
 	\end{aligned}
-	\label{ada_updweights}
+	\label{eq:updweights}
 \end{equation}
+
+The training of the adaboost algorithm is performed in a cyclic way, where at the beginning the weights of each data point to classify are all set to the same value 1/N, and on each iteration a new model is generated and weighted by following the formula seen at figure \ref{eq:ada_alpha}, and the weights are updated for the misclassified data points on the new model by following the function \ref{eq:updweights}, normalizing the weights afterwards.
 
 \begin{equation}
 	\alpha_t = \frac{1}{2}log\frac{1-\epsilon}{\epsilon}
-	\label{ada_alpha}
+	\label{eq:ada_alpha}
 \end{equation}
-% subsection the_linear_support_vector_machine_svm_algorithm (end)
+
+% subsection the_adaboost_algorithm (end)
+
+\subsection{Main algorithm} % (fold)
+\label{sub:main_algorithm}
+The main algorithm used to run the experiment consists on a 10-fold cross-validation over the data set, performing an optimization of the parameters of each model at each one of the folds, by performing a 3-fold of the training data.\\
+
+First the data is divided into 10 folds, and an iteration over the folds selects one fold at each iteration to estimate the out of sample error of the models to generate. Then, the remaining ten folds are used to train the three models. These remaining 9 folds are merged into three folds, and a new iteration over the three folds is performed, selecting one fold at each iteration, which will be used to estimate the error of the tested parameters.\\
+
+The two training folds are used to train the three kinds of models for different values of the parameters, and the out of sample error for the selected values is estimated from the other fold. Once the out of sample error has been calculated from the three folds, the errors for each model type and set of parameters are averaged, and the set of parameters for each model that gives the lowest mean of out of sample errors are selected. Then the models are trained with t	he data of the three folds (which is the data of the 9 training folds of the main 10-fold cross-validation) and the selected parameters.\\
+
+Finally, the out of sample errors tested for the optimal parameters at each fold of the 10-fold cross validation are averaged for each model, giving the mean out of sample error. Also, the standard deviation and confidence intervals are calculated for the ten folds.\\
+
+As for the error surface, it’s obtained by averaging the error surfaces of each fold of the 10-fold cross-validation, which in turn are obtained as the average of the error surfaces for the 3-fold cross validation performed at each fold.\\
+% subsection main_algorithm (end)
 
 % section specification_of_the_problem (end)
 
