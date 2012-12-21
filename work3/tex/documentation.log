@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  21 DEC 2012 20:31
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  21 DEC 2012 23:47
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -595,6 +595,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 96--97
  []
 
 
+Underfull \hbox (badness 2426) in paragraph at lines 98--99
+\OT1/ptm/m/n/10 used to se-lect the al-pha val-ues for the dif-fer-ent
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 98--99
 
  []
@@ -631,58 +636,59 @@ Underfull \hbox (badness 10000) in paragraph at lines 128--129
 
  []
 
+<img/toySigma0P2.png, id=10, 473.77pt x 371.3875pt>
+File: img/toySigma0P2.png Graphic file (type png)
+ <use img/toySigma0P2.png>
+Package pdftex.def Info: img/toySigma0P2.png used on input line 135.
+(pdftex.def)             Requested size: 234.8775pt x 184.11789pt.
 
-Underfull \hbox (badness 2027) in paragraph at lines 132--134
-\OT1/ptm/m/n/10 The ker-nel func-tions al-low for the cal-cu-la-tion of
+Overfull \hbox (6.0pt too wide) in paragraph at lines 135--136
+ [][] 
+ []
+
+<img/toySigma1P5.png, id=12, 466.74374pt x 375.4025pt>
+File: img/toySigma1P5.png Graphic file (type png)
+
+<use img/toySigma1P5.png>
+Package pdftex.def Info: img/toySigma1P5.png used on input line 142.
+(pdftex.def)             Requested size: 234.8775pt x 188.91516pt.
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 142--143
+ [][] 
  []
 
 
-Underfull \hbox (badness 3713) in paragraph at lines 132--134
-\OT1/ptm/m/n/10 the dot-product be-tween two points in a higher
+Underfull \hbox (badness 3884) in paragraph at lines 148--149
+[]\OT1/ptm/m/n/10 The ker-nel func-tions al-low for the cal-cu-la-tion
  []
 
 
-Underfull \hbox (badness 1824) in paragraph at lines 132--134
+Underfull \hbox (badness 1824) in paragraph at lines 148--149
 \OT1/ptm/m/n/10 op-ti-miza-tion func-tion seen in the pre-vi-ous sec-tion
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 132--134
+Underfull \hbox (badness 10000) in paragraph at lines 148--149
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 135--136
+Underfull \hbox (badness 10000) in paragraph at lines 150--151
+
+ []
+
+[2 <./img/toySigma0P2.png> <./img/toySigma1P5.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 152--153
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 137--138
+Underfull \hbox (badness 10000) in paragraph at lines 164--165
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 149--150
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 155--156
-
- []
-
-[2]
-Underfull \hbox (badness 10000) in paragraph at lines 176--177
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 178--179
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 180--181
+Underfull \hbox (badness 10000) in paragraph at lines 170--171
 
  []
 
@@ -692,132 +698,236 @@ Underfull \hbox (badness 10000) in paragraph at lines 182--183
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 184--186
+Underfull \hbox (badness 2478) in paragraph at lines 192--193
+[]\OT1/ptm/m/n/10 After the weights has been nor-mal-ized an-other
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 192--193
+
+ []
+
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 195.
+
+(/usr/local/texlive/2012/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+Underfull \hbox (badness 10000) in paragraph at lines 210--211
 
  []
 
 
-Underfull \hbox (badness 5711) in paragraph at lines 191--192
+Underfull \hbox (badness 10000) in paragraph at lines 221--222
+
+ []
+
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 223--224
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 225--226
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 227--228
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 229--231
+
+ []
+
+
+Underfull \hbox (badness 5711) in paragraph at lines 236--237
 []\OT1/ptm/m/n/10 To im-ple-ment the al-go-rithms de-scribed above,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 191--192
+Underfull \hbox (badness 10000) in paragraph at lines 236--237
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 193--194
+Underfull \hbox (badness 10000) in paragraph at lines 238--239
 
  []
 
-[3] <img/errorSVMHeartLog.png, id=27, 494.84875pt x 339.2675pt>
+
+Underfull \vbox (badness 1931) has occurred while \output is active []
+
+ [4]
+Underfull \hbox (badness 10000) in paragraph at lines 267--268
+
+ []
+
+<img/errorSVMIonosphere.png, id=38, 494.84875pt x 339.2675pt>
+File: img/errorSVMIonosphere.png Graphic file (type png)
+
+<use img/errorSVMIonosphere.png>
+Package pdftex.def Info: img/errorSVMIonosphere.png used on input line 272.
+(pdftex.def)             Requested size: 234.8775pt x 161.02948pt.
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 272--273
+ [][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 277--278
+
+ []
+
+<img/errorSurfaceIonosphere.png, id=39, 494.84875pt x 339.2675pt>
+File: img/errorSurfaceIonosphere.png Graphic file (type png)
+
+<use img/errorSurfaceIonosphere.png>
+Package pdftex.def Info: img/errorSurfaceIonosphere.png used on input line 281.
+
+(pdftex.def)             Requested size: 234.8775pt x 161.02948pt.
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 281--282
+ [][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 286--287
+
+ []
+
+
+Underfull \hbox (badness 2173) in paragraph at lines 288--289
+[]\OT1/ptm/m/n/10 The re-sult of the ex-per-i-ment ex-e-cu-tion can be
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 288--289
+
+ []
+
+<img/IonosphereAnalysi.png, id=40, 494.84875pt x 339.2675pt>
+File: img/IonosphereAnalysi.png Graphic file (type png)
+
+<use img/IonosphereAnalysi.png>
+Package pdftex.def Info: img/IonosphereAnalysi.png used on input line 305.
+(pdftex.def)             Requested size: 234.8775pt x 161.02948pt.
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 305--306
+ [][] 
+ []
+
+[5 <./img/errorSVMIonosphere.png (PNG copy)> <./img/errorSurfaceIonosphere.png 
+(PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 329--330
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 331--332
+
+ []
+
+<img/errorSVMHeartLog.png, id=45, 494.84875pt x 339.2675pt>
 File: img/errorSVMHeartLog.png Graphic file (type png)
 
 <use img/errorSVMHeartLog.png>
-Package pdftex.def Info: img/errorSVMHeartLog.png used on input line 229.
+Package pdftex.def Info: img/errorSVMHeartLog.png used on input line 335.
 (pdftex.def)             Requested size: 234.8775pt x 161.02948pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 229--230
+Overfull \hbox (6.0pt too wide) in paragraph at lines 335--336
  [][] 
  []
 
-<img/errorSurfaceHeartStatLog.png, id=28, 907.39pt x 600.2425pt>
+<img/errorSurfaceHeartStatLog.png, id=46, 907.39pt x 600.2425pt>
 File: img/errorSurfaceHeartStatLog.png Graphic file (type png)
 
 <use img/errorSurfaceHeartStatLog.png>
-Package pdftex.def Info: img/errorSurfaceHeartStatLog.png used on input line 23
-7.
+Package pdftex.def Info: img/errorSurfaceHeartStatLog.png used on input line 34
+1.
 (pdftex.def)             Requested size: 234.8775pt x 155.37244pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 237--238
+Overfull \hbox (6.0pt too wide) in paragraph at lines 341--342
  [][] 
  []
 
-<img/heartLogAnalisy.png, id=29, 494.84875pt x 339.2675pt>
+<img/heartLogAnalisy.png, id=47, 494.84875pt x 339.2675pt>
 File: img/heartLogAnalisy.png Graphic file (type png)
 
 <use img/heartLogAnalisy.png>
-Package pdftex.def Info: img/heartLogAnalisy.png used on input line 258.
+Package pdftex.def Info: img/heartLogAnalisy.png used on input line 361.
 (pdftex.def)             Requested size: 234.8775pt x 161.02948pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 258--259
+Overfull \hbox (6.0pt too wide) in paragraph at lines 361--362
  [][] 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 283--284
-
- []
-
-[4 <./img/errorSVMHeartLog.png (PNG copy)> <./img/errorSurfaceHeartStatLog.png 
-(PNG copy)> <./img/heartLogAnalisy.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 285--286
+[6 <./img/IonosphereAnalysi.png (PNG copy)> <./img/errorSVMHeartLog.png (PNG co
+py)> <./img/errorSurfaceHeartStatLog.png (PNG copy)> <./img/heartLogAnalisy.png
+ (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 384--385
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 287--288
+Underfull \hbox (badness 10000) in paragraph at lines 388--389
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 289--290
+Underfull \hbox (badness 10000) in paragraph at lines 392--393
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 291--292
+Underfull \hbox (badness 10000) in paragraph at lines 399--400
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 298--299
+Underfull \hbox (badness 10000) in paragraph at lines 401--402
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 300--301
+Underfull \hbox (badness 10000) in paragraph at lines 403--405
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 302--304
-
- []
-
-No file documentation.bbl.
-[5] (./documentation.aux) ) 
+(./documentation.bbl) [7] (./documentation.aux) ) 
 Here is how much of TeX's memory you used:
- 4877 strings out of 493488
- 70709 string characters out of 3141326
- 132758 words of memory out of 3000000
- 8079 multiletter control sequences out of 15000+200000
- 44929 words of font info for 97 fonts, out of 3000000 for 9000
+ 4952 strings out of 493488
+ 72170 string characters out of 3141326
+ 132850 words of memory out of 3000000
+ 8141 multiletter control sequences out of 15000+200000
+ 47029 words of font info for 101 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 37i,12n,32p,646b,263s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/
-base/8r.enc}</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/
-cmbx10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/c
-mex10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-mi10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmm
-i5.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7
-.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.p
-fb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb
-></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></
-usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr
-/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/
-local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/lo
-cal/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/loca
-l/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/
-texlive/2012/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/20
-12/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2012/texmf-
-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2012/texmf-dist/fonts
-/type1/urw/times/utmri8a.pfb>
-Output written on documentation.pdf (5 pages, 197046 bytes).
+ 37i,12n,32p,660b,261s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/local/texlive/2012/texmf
+-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2012/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmr5.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmr7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmr8.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmsy10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmsy5.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/c
+msy7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cms
+y8.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb><
+/usr/local/texlive/2012/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local
+/texlive/2012/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/
+2012/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2012/texmf
+-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on documentation.pdf (7 pages, 258718 bytes).
 PDF statistics:
- 92 PDF objects out of 1000 (max. 8388607)
- 64 compressed objects within 1 object stream
+ 116 PDF objects out of 1000 (max. 8388607)
+ 77 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
 

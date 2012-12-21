@@ -69,23 +69,23 @@
 \maketitle
 
 \begin{abstract}
-Nulla vitae elit libero, a pharetra augue. Donec id elit non mi porta gravida at eget metus. Etiam porta sem malesuada magna mollis euismod. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nulla vitae elit libero, a pharetra augue. Nullam id dolor id nibh ultricies vehicula ut id elit.
+In this work, several supervised classifiers are introduced and tested -SVM with different kernels (linear and non-linear RBF) and a AdaBoost metaclassifier-. They was tested on two different kinds of datasets (one linear and other non-linear). No significant difference could be proved between the several algorithms when a classification of the linear set was performed. In the case of non-linear set, the best significative performance was obtained using RBF-Kernel version. All the data related to these experiments was exposed and commented.
 \end{abstract}
 
 \section{Introduction} % (fold)
 \label{sec:introduction}
 The problem of classifying a set of images with two possible classes by means of a binary classifier is a long studied problem which has many techniques for its resolution. The goal of this paper is to analyze the performance of three commonly used techniques for two distinct data sets with a varying number of features and different data distribution. More precisely, the algorithms will be run for a linearly separable dataset with 13 features, and for a non-linearly separable dataset with 34 features.\\
 
-The three algorithms to be analyzed are the linear Support Vector Machine (SVM), a kernelized version of the Support Vector Machine using the Radial Basis Function kernel (RBF-SVM), and the Adaboost meta-classifier.\\
+The three algorithms to be analyzed are the linear Support Vector Machine (SVM), a kernelized version of the Support Vector Machine using a Gaussian Radial Basis Function kernel (RBF-SVM), and the Adaboost meta-classifier.\\
 
-The SVM algorithm is a linear classifier which defines a delimiting vector to separate the two classes of the data. For this implementation, a soft-margin version of the classifier which allows for data with overlapping classes is used in order to prevent the algorithm from destabilizing in non-linearly separable data. The RBF-SVM algorithm is a kernelized version of the SVM which transforms the data to be classified by projecting the points into a new dimension by means of a radial basis function, which allows for a better separability of the data.\\
+The SVM algorithm is a linear classifier which defines a delimiting hyperplane to separate the two classes of the data. For this implementation, a soft-margin version of the classifier which allows for data with overlapping classes is used in order to prevent the algorithm from destabilizing in non-linearly separable data. The RBF-SVM algorithm is a kernelized version of the SVM which transforms the data to be classified by projecting the points into a new dimension by means of a radial basis function, which allows for a better separability of the data.\\
 
 Finally, the Adaboost meta-classifier is used in conjunction with the linear SVM. The Adaboost (or adaptive boosting) is an algorithm consisting on the generation of a set of weighted weak models which then classify the data by means of a weighted voting of the results of the model. Multiple weak algorithms were considered for the meta-classifier, but finally SVM was chosen for being the one with the lowest out of sample error.
 % section introduction (end)
 
 \section{Specification of the problem} % (fold)
 \label{sec:specification_of_the_problem}
-The general algorithm of the problem consists on a 10-fold cross-validation of the test data sets to calculate the out of sample error for the used algorithms, and for each fold a 3-fold cross-validation is performed over the train data to select the parameters of the models. Three folds are used instead of 10 because of the computational cost of the system, but a 10-fold cross-validation would be preferred to increase the accuracy of the estimation of the out of sample error for the given parameters.\\
+The general algorithm of the problem consists on a 10-fold cross-validation of the test data sets to calculate the out of sample error for the used algorithms, and for each fold a 3-fold cross-validation is performed over the train data to select the parameters of the models. Three folds are used instead of 10 because of the computational cost of the system, but a 10-fold cross-validation would be preferred to increase the accuracy of the model parameters selection.\\	
 
 In this section the specification of each algorithm will be explained, as well as the general algorithm used for the obtention and analysis of the out of sample error.
 
@@ -95,7 +95,7 @@ The SVM algorithm consists on the optimization of a hyperplane which is then use
 
 The hyperplane resulting from the training of the model is then used as a separator between the two classes, where all elements which fall above the hyperplane belong to one of the classes, and the ones falling below belong to the other. These two classes are represented by a +1 and a -1 value correspondingly, which simplifies the training and classification tasks.\\
 
-The equation \ref{eq:svm_maximize} represents the maximization function used to select the alpha values for the different support vectors in the dual form of the SVM with soft margin. The alpha values represent the weight of each support vector, and has a value between 0 and C, being C the parameter to optimize. A higher value for alpha means that a miss-classification of the related support vector is more heavily penalized, so increasing the value of C increases the maximum weight of each support vector.\\
+The equation \ref{eq:svm_maximize} represents the maximization function used to select the alpha values for the different support vectors in the dual form of the SVM with soft margin. The alpha values represent the weight of each support vector, and has a value between 0 and C, being C the parameter to be selected in the model selection phase. A higher value for alpha means that a miss-classification of the related support vector is more heavily penalized, so increasing the value of C increases the maximum weight of each support vector.\\
 \begin{equation}
 	\begin{aligned}
 		& \underset{\alpha_i}{\text{max}}
@@ -125,11 +125,26 @@ Once the training of the model is completed, the classification of one element c
 \subsection{The Radial Basis Function kernelized SVM (RBF-SVM) algorithm} % (fold)
 \label{sub:the_radial_basis_function_kernelized_svm_rbf_svm_algorithm}
 
-The RBF-SVM algorithm is a variation of the SVM algorithm which uses a non-linear kernel different from the dot product of data points. In particular, the kernel used in this algorithm for the kernelized SVM is the radial basis function, which is calculated by using the function represented at figure \ref{eq:rbf_kernel}. As it can be seen in the function, there is an sigma parameter, which thefines the width of the gaussian distribution over the new dimension. As the sigma value increases, the gaussian form is wider, while it gets sharper as sigma decreases.\\
+The RBF-SVM algorithm is a variation of the SVM algorithm which uses a non-linear kernel different from the dot product of data points. In particular, the kernel used in this algorithm for the kernelized SVM is the gaussian radial basis function, which is calculated by using the function represented at figure \ref{eq:rbf_kernel}. As it can be seen in the function, there is an sigma parameter, which defines the width of the gaussian distribution over the new dimension. As the sigma value increases, the gaussian form is wider(~\ref{fig:toySigma0P2}), while it gets sharper as sigma decreases(~\ref{fig:toySigma1P5}).\\
 \begin{equation}
 	k_{rbf}(x_1,x_2) = e^\frac{||x_1-x_2||^2}{2\sigma^2}
 	\label{eq:rbf_kernel}
 \end{equation}
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/toySigma0P2}
+	\caption{$\sigma = 0.2$}
+	\label{fig:toySigma0P2}
+\end{figure}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/toySigma1P5}
+	\caption{$\sigma = 1.5$}
+	\label{fig:toySigma1P5}
+\end{figure}
+
+
 The kernel functions allow for the calculation of the dot-product between two points in a higher dimensional space without the need of first increasing the dimensionality of the data points, simplifying the process of optimizing the function, since the same optimization function seen in the previous section (figure \ref{eq:svm_maximize}) is valid, needing only to replace the dot product by the kernel function.\\
 
 Since the dot product is performed on the lower-dimensional data, and the dataset isn't transformed to the higher-dimensional space, it's not possible to calculate the hyperplane director vector from the support vector, and thus the support vectors, their alphas and labels must be added to the model in order to classify other data points. The `b' value, which represents the offset of the hyperplane, is calculated in the same way as with the linear SV, as seen in the second function of figure \ref{eq:svm_wb}.\\
@@ -146,13 +161,25 @@ As with the SVM models, the sign of the result defines the class of the data poi
 
 \subsection{The Adaboost Algorithm} % (fold)
 \label{sub:the_adaboost_algorithm}
-The adaboost algorithm is a meta-classifier that uses a linear combination of weak classifiers of the same type to classify a data point, as it can be seen in figure \ref{eq:ada_classify}. As it can be seen, each weak classifier as a weight assigned, which is inversely proportional to the classification error of the weak model.\\
+The adaboost algorithm is a meta-classifier that uses a linear combination of weak classifiers of the same type to classify a data point, as shows the figure \ref{eq:ada_classify}. As it can be seen, each weak classifier as a weight assigned, which is inversely proportional to the classification error of the weak model.\\
 \begin{equation}
 	H(x) = sign(\sum_{t=1}^{T}{\alpha_t h_t(x)})
 	\label{eq:ada_classify}
 \end{equation}
 
-An weak classifier can be used with the adaboost algorithm, and some have been considered for this work. More specifically, the threshold, perceptron and linear SVM classifiers have been considered for being used with the adaboost algorithm. Finally the selected one has been the SVM algorithm, since it is the one with the highest predictive power, and because it’s a good option to check the improvement of the Adaboost algorithm over the normal SVM classifier.\\
+An weak classifier can be used with the adaboost algorithm, and some have been considered for this work. More specifically, the threshold, perceptron with different implementations of the activation function(step function~\ref{eq:step} and sigmoid function~\ref{eq:sigmoid}).and linear SVM classifiers have been considered for being used with the adaboost algorithm. Finally the selected one has been the SVM algorithm, since it is the one with the highest predictive power, and because it’s a good option to check the improvement of the Adaboost algorithm over the normal SVM classifier.\\
+
+\begin{equation}
+	x_{A}( x )=\{\begin{array}{cc} 1 & if\; x\; \in A \\ 0 & if\; x\; \notin A \end{array}
+	\label{eq:step}
+\end{equation}
+
+\begin{equation}
+	S(t) = \frac{1}{1+e^{-t}}
+	\label{eq:sigmoid}
+\end{equation}
+
+The training of the adaboost algorithm is performed in a cyclic way, where at the beginning the weights of each data point to classify are all set to the same value 1/N, and on each iteration a new model is generated and weighted by following the formula seen at figure \ref{eq:ada_alpha}, and the weights are updated for the misclassified data points on the new model by following the function \ref{eq:updweights}, normalizing the weights afterwards.\\
 
 \begin{equation}
 	\begin{aligned}
@@ -162,7 +189,25 @@ An weak classifier can be used with the adaboost algorithm, and some have been c
 	\label{eq:updweights}
 \end{equation}
 
-The training of the adaboost algorithm is performed in a cyclic way, where at the beginning the weights of each data point to classify are all set to the same value 1/N, and on each iteration a new model is generated and weighted by following the formula seen at figure \ref{eq:ada_alpha}, and the weights are updated for the misclassified data points on the new model by following the function \ref{eq:updweights}, normalizing the weights afterwards.
+After the weights has been normalized another model could be generated. In order to try to generate a model for classify the misclassified data, a sampling over the population is performed giving priority more representativity to the weightier data. The algorithm used for this purpose is SUS\footnote{Stochastic Universal Sampling}. This algorithm is often used in evolutionary algorithms to fill the mating poll and have the advantage of produce an unbiased sample with minimum spread~\cite{baker1985reducing}.\\
+
+\begin{footnotesize}
+	\begin{verbatim}
+begin
+    current_member = i = 0;
+    r = random number between [0,1/N];
+    while current_m <= N do
+        while r <= a[i] do
+            sample[current_member] = pop[i];
+            r = r+1/N;
+        od
+        i = i + 1;
+    od
+end
+	\end{verbatim}
+\end{footnotesize}
+
+The total number of weak models selected is defined by the number of iterations of the algorithm, which is defined by the parameter T, but if the new weak models generated have an error above 0.5 over the training data, the model is discarded, and the weak models selection stops. This means that T defines an upper bound for the number of weak models, but a lower number may be finally selected.\\
 
 \begin{equation}
 	\alpha_t = \frac{1}{2}log\frac{1-\epsilon}{\epsilon}
@@ -215,14 +260,75 @@ The implemented functions are listed below, with a brief explanation of the task
 
 \section{Experiments} % (fold)
 \label{sec:experiments}
+As was exposed in section~\ref{sub:main_algorithm}, the algorithm has to execute several steps in order to obtain the desired results for the several datasets used. In the next sections this results will be exposed and then commented.
 
 \subsection{Ionosphere dataset} % (fold)
 \label{sub:ionosphere_dataset}
+The first dataset used was \emph{ionosphere}. This dataset contain 351 instances split between two classes. This dataset is unbalanced, one class has the double of instances than the other.\\
+
+As was said, one of the fist steps needed is select the best parameters for each fold used to calculate the out of sample error. In the figure~\ref{fig:errorSVMIonosphere} the mean of those errors obtained on the all cross-validation process for each possible value of C\footnote{The upper bound of soft margin} used in the linear SVM is plotted.\\
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/errorSVMIonosphere}
+	\caption{Linear SVM parameter error}
+	\label{fig:errorSVMIonosphere}
+\end{figure}
+
+The same process is applied to the selection of the values of C and $\sigma$ used in the RBF version of the support vector machine algorithm. The error surface plotted in the figure~\ref{fig:errorSurfaceIonosphereStatLog} shows the mean of this error across the different folds.\\
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/errorSurfaceIonosphere}
+	\caption{RBF parameters error surface for the ionosphere dataset}
+	\label{fig:errorSurfaceIonosphereStatLog}
+\end{figure}
+
+In the case of the parameter used in AdaBoost, \emph{T}, the upper bound to the possible number of models that the algorithm could generate, no plot is shown. In this case the number of models generated was 3 the minimum value in our range of possible values [3,24]. So the model is the same in each fold.\\
+
+The result of the experiment execution can be seen in the table~\ref{tab:IonosphereComparison}. This table shows different statistical values of the out of sample error: the mean, the standard deviation, the standard error of mean and a confidence interval calculated over a two-tailed student's t distribution with 9 degrees of freedom and a significance of 0.05. The figure~\ref{fig:IonosphereLogAnalisy} show a graphical representation of this values.\\
+
+\begin{table}[ht!]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		\textbf{Algorithms} & \textbf{Mean} & $\mathbf{\sigma}$ & \textbf{SEM} & \textbf{C.I.}\\\hline
+		SVM & 0.1311 & 0.0491 & 0.0155 & $\pm$0.0351\\\hline
+		RBF & 0.0656 & 0.0332 & 0.0105 & $\pm$0.0236\\\hline
+		ADA & 0.1254 & 0.0428 & 0.0135 & $\pm$0.0306\\\hline
+	\end{tabular}
+	\label{tab:IonosphereComparison}
+	\caption{Ionosphere log error results}
+\end{table}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/IonosphereAnalysi}
+	\caption{Error and confidence interval}
+	\label{fig:IonosphereLogAnalisy}
+\end{figure}
+
+In order to perform a comparison between the three methods, a signed-rank Wilcoxon text was performed. The table~\ref{tab:IonosphereWilcoxonTest} show a resume of this statistical comparison and how RBF beats clearly the linear version of SVM and AdaBoost.
+
+\begin{table}[ht!]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\textbf{Test} & \textbf{p-value} & \textbf{Significative difference}\\\hline
+		Linear-SVM \emph{vs} RBF-SVM & 0.0039 & $\surd$ (RBF-SVM)\\\hline
+		Linear-SVM \emph{vs} AdaBoost & 0.9062 & —\\\hline
+		RBF-SVM \emph{vs} AdaBoost & 0.002 & $\surd$ (RBF-SVM)\\\hline
+	\end{tabular}
+	\label{tab:IonosphereWilcoxonTest}
+	\caption{Wilcoxon statistical test}
+\end{table}
 
 % subsection ionosphere_dataset (end)
 
 \subsection{Heart-statlog dataset} % (fold)
 \label{sub:heart_statlog_dataset}
+The next dataset used was \emph{heart-statlog}, a balanced dataset that contains 270 instances of 13 features each. The same process used in the previous dataset will be applied.\\
+
+The first step was show the different parameter errors for the parameters used in with the linear and RBF versions of the SVM. First, the error for C parameter of linear-SVM was plotted, figure~\ref{fig:errorSVMHeartLog}. Then, a surface representing the error of the C and $\sigma$ was displayed in the figure~\ref{fig:errorSurfaceHeartStatLog}.\\
 
 \begin{figure}[ht!]
 	\centering
@@ -230,8 +336,6 @@ The implemented functions are listed below, with a brief explanation of the task
 	\caption{Linear SVM parameter error}
 	\label{fig:errorSVMHeartLog}
 \end{figure}
-
-
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.5\textwidth]{img/errorSurfaceHeartStatLog}
@@ -239,7 +343,7 @@ The implemented functions are listed below, with a brief explanation of the task
 	\label{fig:errorSurfaceHeartStatLog}
 \end{figure}
 
-
+The results of the execution are displayed in the table~\ref{tab:heartErrorComparison} and represented in the figure~\ref{fig:heartLogAnalisy}. As can be noticed similar results are outputted.\\
 \begin{table}[ht!]
 	\centering
 	\begin{tabular}{|c|c|c|c|c|}
@@ -252,7 +356,6 @@ The implemented functions are listed below, with a brief explanation of the task
 	\label{tab:heartErrorComparison}
 	\caption{Heart-stat log error results}
 \end{table}
-
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.5\textwidth]{img/heartLogAnalisy}
@@ -260,7 +363,7 @@ The implemented functions are listed below, with a brief explanation of the task
 	\label{fig:heartLogAnalisy}
 \end{figure}
 
-
+The statistical analysis performed using wilcoxon test reflects this fact. No significative difference has been found between the three algorithms tested.\\
 \begin{table}[ht!]
 	\centering
 	\begin{tabular}{|c|c|c|}
@@ -273,24 +376,22 @@ The implemented functions are listed below, with a brief explanation of the task
 	\label{tab:heartWilcoxonTest}
 	\caption{Wilcoxon statistical test}
 \end{table}
-
-
 % subsection heart_statlog_dataset (end)
 % section experiments (end)
 
 \section{Conclusions} % (fold)
 \label{sec:conclusions}
-From the results obtained by applying the three binary classification methods to the two data sets, it can be seen that in both cases the adaboost algorithm, which generates a model based on a weighted polling over various specialized linear SVM models, performs slightly better than in the case of a linear SVM model.\\
+From the results obtained by applying the three binary classification methods to the two data sets, it can be seen that in both cases the adaboost algorithm, which generates a model based on a weighted polling over various specialized linear SVM models, performs slightly better than in the case of a linear SVM model\\
 
-This is due to the non-linearity of the data in one case, where the out of sample error gets reduced by a 11\% on average, and due to the data not being completely linearly separable in the other, which makes it is impossible for an SVM classifier with soft margins to always classify the data correctly. On the other hand, the use of multiple SVM models in the poll when using adaboost, allows for the definition of non-linear boundaries between the classes, which reduces the number of missclassifications.\\
+This is due to the non-linearity of the data in one case, where the out of sample error gets reduced by a 11\% on average, and due to the data not being completely linearly separable in the other, which makes it is impossible for an SVM classifier with soft margins to always classify the data correctly. On the other hand, the use of multiple SVM models in the poll when using adaboost, allows for the definition of non-linear boundaries between the classes, which reduces the number of missclassifications. However, with the actual number of folds and the reduced amount of data, no statistical significance could been proved.
 
 It can also be seen during the analysis that in the case of the adaboost classifier the accuracy of the model doesn't change when increasing the number of iterations T of the meta-classifier generation. This is due to the algorithm choosing always a low number of weak models, not getting better results by increasing the number of weak models above 3, and stopping the addition of new ones after the error of these models gets above 0.5. For that reason, even though the number of weak models is allowed to go above 3, no new models are added passed this value to prevent worsening the predition power of the model.\\
 
-When comparing the results of the non-linear data set, it can be seen that the RBF-SVM algorithm outperforms both adaboost and SVM, by getting a 6.56\% mean out of sample error, while the other two get a 13.11\% and 12.54\% respectively. This behaviour is to expect, since the RBF-SVM models allow the classification in non-linear egions of the data space, while the other two types of models only work well when detecting lineal or curved separations between classes.\\
+When comparing the results of the non-linear data set, it can be seen that the RBF-SVM algorithm outperforms both adaboost and SVM, by getting a 6.56\% mean out of sample error, while the other two get a 13.11\% and 12.54\% respectively. This behaviour is to expect, since the RBF-SVM models allow the classification in non-linear egions of the data space, while the other two types of models only work well when detecting lineal or curved separations between classes. In this case, the wilcoxon test shows statistical difference.
 
-In the linear data set with some overlapping of the classes, on the other hand, it can be seen that both the SVM and RBF-SVM models have the same mean accuracy, with little difference on its standard deviation. This is because in the case of linearly separable data, the RBF-SVM separates the data with an hyperplane very similar to that of the linear SVM model. In the case of the Adaboost algorithm, which uses the linear SVM as weak classifier, the result is again very close to that of both SVM and RBF-SVM models, since a single SVM perceptron can correctly classify most of the cases the Adaboost algorithm classifies.\\
+In the linear data set with some overlapping of the classes, on the other hand, it can be seen that both the SVM and RBF-SVM models have the same mean accuracy, with little difference on its standard deviation. This is because in the case of linearly separable data, the RBF-SVM separates the data with an hyperplane very similar to that of the linear SVM model. In the case of the Adaboost algorithm, which uses the linear SVM as weak classifier, the result is again very close to that of both SVM and RBF-SVM models, since a single linear SVM can correctly classify most of the cases the Adaboost algorithm classifies.\\
 
-TODO: Analisis del cost computacional?
+
 % section conclusions (end)
 
 \section{Future Work} % (fold)
@@ -303,5 +404,5 @@ Finally other types of kernels could be tried for the non-linear SVM in order to
 % section future_work (end)
 
 \bibliographystyle{plain}
-\bibliography{}
+\bibliography{documentation}
 \end{document}
