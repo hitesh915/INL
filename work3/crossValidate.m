@@ -1,6 +1,9 @@
 function [ eout ] = crossValidate( dataset )
-%CROSSVALIDATE Runs the core of the experiment. Selection of the models for
-%several algorithms, computation of the out of sample error...
+%CROSSVALIDATE Runs the core of the experiment, performing a 10-fold 
+%cross-validation of the data set by training the models at each fold, 
+%selecting their optimal parameters at each fold. It returns the out of 
+%sample error for each model, its statistics and the error surface for the 
+%input parameters of the models.
 %   INPUT:
 %       - dataset: The name of the dataset used to test the experiment.
 %   OUTPUT:
@@ -223,6 +226,11 @@ function [ eout ] = crossValidate( dataset )
         eout_ada(i) = sum(testData.labels ~= ilabels) / size(ilabels,1);
     end
     
+    % Average error surfaces
+    errs_svm = errs_svm / size(data,1);
+    errs_rbf = errs_rbf / size(data,1);
+    errs_ada = errs_ada / size(data,1);
+    
     % Calculate mean of sample errors
     meout_svm = mean(eout_svm);
     meout_rbf = mean(eout_rbf);
@@ -241,18 +249,21 @@ function [ eout ] = crossValidate( dataset )
     % Prepare eout return structure
     eout = struct;
     eout.svm = struct;
+    eout.svm.errors = eout_svm;
     eout.svm.mean = meout_svm;
     eout.svm.std = seout_svm;
     eout.svm.sem = seout_svm / sqrt(size(data,1));
     eout.svm.ci = eout.svm.sem * 2.262;
     eout.svm.surface = errs_svm;
     eout.rbf = struct;
+    eout.rbf.errors = eout_rbf;
     eout.rbf.mean = meout_rbf;
     eout.rbf.std = seout_rbf;
     eout.rbf.sem = seout_rbf / sqrt(size(data,1));
     eout.rbf.ci = eout.rbf.sem * 2.262;
     eout.rbf.surface = errs_rbf;
     eout.ada = struct;
+    eout.ada.errors = eout_ada;
     eout.ada.mean = meout_ada;
     eout.ada.std = seout_ada;
     eout.ada.sem = seout_ada / sqrt(size(data,1));
